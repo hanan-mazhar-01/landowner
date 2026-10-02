@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "341447303427",
+    "project_id": "landowner-e2c4b",
+    "storage_bucket": "landowner-e2c4b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341447303427:android:78d3a8f1443b05ba528936",
+        "android_client_info": {
+          "package_name": "com.veradostudio.landowner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341447303427-nu7ts8pjt7m9f8omf073k1k348hk9ck5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.veradostudio.landowner",
+            "certificate_hash": "1549a871fcae2e02ef4f9828087253191994d360"
+          }
+        },
+        {
+          "client_id": "341447303427-929fo73ka8n621hvsok2u2aghp7jub7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC-Dr2xEvWWYnCkC9i7wcrdki9LW2YP38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341447303427-929fo73ka8n621hvsok2u2aghp7jub7b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "341447303427-863ihrga7nruc6c2ljgp2rebfvu511u7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.veradostudio.propertyManager"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341447303427:android:297fe89265158e15528936",
+        "android_client_info": {
+          "package_name": "com.veradostudio.property_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341447303427-kh16tmugmc2hd6vg9aggie9no5m9cie5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.veradostudio.property_manager",
+            "certificate_hash": "1549a871fcae2e02ef4f9828087253191994d360"
+          }
+        },
+        {
+          "client_id": "341447303427-929fo73ka8n621hvsok2u2aghp7jub7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC-Dr2xEvWWYnCkC9i7wcrdki9LW2YP38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341447303427-929fo73ka8n621hvsok2u2aghp7jub7b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "341447303427-863ihrga7nruc6c2ljgp2rebfvu511u7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.veradostudio.propertyManager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E6EBF8;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#111830;-webkit-font-smoothing:antialiased}
+a{color:#304BC7;text-decoration:none}a:hover{color:#4D6DFA}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+input{font:inherit}
+*::-webkit-scrollbar{display:none}
+@keyframes hIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:1200}to{stroke-dashoffset:0}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:56px;justify-content:center;align-items:flex-start;padding:48px 32px;box-sizing:border-box">
+
+<aside style="flex:1 1 300px;max-width:360px;display:flex;flex-direction:column;gap:28px;padding-top:12px">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:34px;height:34px;border-radius:11px;background:linear-gradient(150deg,#4D6DFA,#304BC7);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"></path></svg></div>
+      <span style="font:800 20px Manrope;letter-spacing:-.5px">Homely</span>
+      <span style="font:600 11px ui-monospace,Menlo,monospace;color:#6B7186;background:#fff;padding:3px 7px;border-radius:6px">UI v1</span>
+    </div>
+    <p style="margin:0;font-size:14px;line-height:1.55;color:#4A5170;text-wrap:pretty">A private property operating system. Your blue palette, rebuilt around one question per screen: what you own, what it's worth, what it earns, what needs you.</p>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <span style="font:700 11px Manrope;letter-spacing:1.4px;text-transform:uppercase;color:#6B7186">Screens</span>
+    <sc-for list="{{ screenList }}" as="s" hint-placeholder-count="8">
+      <button onClick="{{ s.go }}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:12px;background:{{ s.bg }};color:{{ s.fg }};font-size:14px;font-weight:600;text-align:left">
+        <span>{{ s.label }}</span><span style="font:500 11px ui-monospace,Menlo,monospace;opacity:.6">{{ s.num }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <span style="font:700 11px Manrope;letter-spacing:1.4px;text-transform:uppercase;color:#6B7186">Colour</span>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">
+      <div style="aspect-ratio:1;border-radius:10px;background:#304BC7"></div>
+      <div style="aspect-ratio:1;border-radius:10px;background:#4D6DFA"></div>
+      <div style="aspect-ratio:1;border-radius:10px;background:#9EAEFF"></div>
+      <div style="aspect-ratio:1;border-radius:10px;background:#E7EBFF"></div>
+      <div style="aspect-ratio:1;border-radius:10px;background:#F3F6FE;border:1px solid #D9DFF0"></div>
+      <div style="aspect-ratio:1;border-radius:10px;background:#111830"></div>
+    </div>
+    <div style="display:flex;gap:14px;font-size:12px;color:#4A5170">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:4px;background:#2FB673"></span>Positive</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:4px;background:#F2A93B"></span>Attention</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:4px;background:#E5484D"></span>Overdue</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <span style="font:700 11px Manrope;letter-spacing:1.4px;text-transform:uppercase;color:#6B7186">Type</span>
+    <div style="font:800 40px/1 Manrope;letter-spacing:-1.6px">Rs124.8M</div>
+    <div style="font:700 20px Manrope;letter-spacing:-.4px">Manrope — numbers, names, headings</div>
+    <div style="font-size:14px;color:#4A5170">SF Pro — body, controls, metadata</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.5;color:#4A5170">
+    <span style="font:700 11px Manrope;letter-spacing:1.4px;text-transform:uppercase;color:#6B7186">Try</span>
+    <span>Connected flow: + → Property (status Rented) → lease form → reminders auto-scheduled → bell → overdue → Mark as paid → Finance updates. Also: tap the blue + for the arc menu · swipe the property carousel · tap chart bars in Finance · ask a question in Intelligence (More → Portfolio Intelligence).</span>
+  </div>
+</aside>
+
+<div style="flex:none;width:410px;height:864px;border-radius:58px;background:#0B0F1F;padding:10px;box-sizing:border-box;box-shadow:0 40px 80px -30px rgba(20,32,90,.45)">
+<div style="position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:#F3F6FE;transform:translateZ(0)">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 34px 0 40px;box-sizing:border-box;color:{{ sbColor }};pointer-events:none">
+    <span style="font-weight:600;font-size:16px">9:41</span>
+    <div style="position:absolute;left:50%;top:11px;width:122px;height:35px;margin-left:-61px;border-radius:20px;background:#000"></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5" width="3" height="7" rx="1"></rect><rect x="10" y="2.5" width="3" height="9.5" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+      <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3.5" stroke="currentColor" opacity=".45"></rect><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"></rect><rect x="24" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".45"></rect></svg>
+    </div>
+  </div>
+
+  <sc-if value="{{ isWelcome }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#F3F6FE">
+    <div style="position:relative;height:520px;background:url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop) center/cover">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,24,48,.35) 0%,rgba(17,24,48,0) 30%,rgba(243,246,254,0) 60%,#F3F6FE 100%)"></div>
+      <div style="position:absolute;top:70px;left:28px;display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.35)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"></path></svg></div>
+        <span style="font:800 20px Manrope;color:#fff;letter-spacing:-.4px">Homely</span>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:14px;padding:0 28px 44px;margin-top:-70px;position:relative">
+      <h1 style="margin:0;font:800 36px/1.08 Manrope;letter-spacing:-1.4px;color:#111830;text-wrap:pretty">Everything you own, <span style="color:#4D6DFA">in one calm place.</span></h1>
+      <p style="margin:0;font-size:15px;line-height:1.5;color:#6B7186;text-wrap:pretty">Value, rent, tenants and upkeep for every property — with an assistant that explains your numbers.</p>
+      <div style="display:flex;gap:6px;margin-top:6px"><span style="width:22px;height:6px;border-radius:3px;background:#4D6DFA"></span><span style="width:6px;height:6px;border-radius:3px;background:#C9D3F5"></span><span style="width:6px;height:6px;border-radius:3px;background:#C9D3F5"></span></div>
+      <div style="flex:1"></div>
+      <button onClick="{{ goHome }}" style="height:58px;border-radius:20px;background:linear-gradient(150deg,#4D6DFA,#304BC7);color:#fff;font:700 17px Manrope;display:flex;align-items:center;justify-content:space-between;padding:0 22px;box-shadow:0 14px 30px -12px rgba(48,75,199,.7)" style-active="transform:scale(.98)">
+        <span>Get started</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </button>
+      <button onClick="{{ goHome }}" style="height:44px;font-size:15px;color:#6B7186">I already have an account · <span style="color:#304BC7;font-weight:600">Sign in</span></button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isHome }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:62px 24px 0;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:13px;color:#6B7186">Tuesday, 29 September</span>
+        <span style="font:800 25px Manrope;letter-spacing:-.8px">Good morning, John</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ goNotifs }}" aria-label="Notifications" style="position:relative;width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(20,32,90,.06)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="position:absolute;top:11px;right:12px;width:8px;height:8px;border-radius:4px;background:#E5484D;border:2px solid #fff"></span></button>
+        <button onClick="{{ goMore }}" aria-label="Profile" style="width:44px;height:44px;border-radius:22px;background:url(https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop) center/cover"></button>
+      </div>
+    </div>
+
+    <div style="padding:30px 24px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:13px;font-weight:600;color:#6B7186;letter-spacing:.2px">Total portfolio value</span>
+      <div style="display:flex;align-items:flex-start;gap:4px;font-family:Manrope;color:#111830">
+        <span style="font-size:26px;font-weight:700;color:#9AA0B4;margin-top:8px">Rs</span>
+        <span style="font-size:58px;font-weight:800;letter-spacing:-2.6px;line-height:1">{{ heroTxt }}</span>
+        <span style="font-size:26px;font-weight:700;color:#9AA0B4;margin-top:8px">M</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+        <span style="display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:999px;background:#E3F5EC;color:#1B8A55;font-weight:700"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"></path></svg>12.4%</span>
+        <span style="color:#6B7186">+Rs13.7M over 12 months</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;position:relative">
+      <svg width="390" height="170" viewBox="0 0 390 170" style="display:block">
+        <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4D6DFA" stop-opacity=".22"></stop><stop offset="1" stop-color="#4D6DFA" stop-opacity="0"></stop></linearGradient></defs>
+        <line x1="0" y1="50" x2="390" y2="50" stroke="#DDE3F3" stroke-dasharray="2 5"></line>
+        <line x1="0" y1="100" x2="390" y2="100" stroke="#DDE3F3" stroke-dasharray="2 5"></line>
+        <path d="{{ homeArea }}" fill="url(#hg)"></path>
+        <path d="{{ homeLine }}" fill="none" stroke="#4D6DFA" stroke-width="2.6" stroke-linecap="round" style="stroke-dasharray:1200;animation:{{ aDraw }}"></path>
+        <line x1="{{ homeEnd.x }}" y1="{{ homeEnd.y }}" x2="{{ homeEnd.x }}" y2="170" stroke="#4D6DFA" stroke-opacity=".3" stroke-dasharray="3 4"></line>
+        <circle cx="{{ homeEnd.x }}" cy="{{ homeEnd.y }}" r="10" fill="#4D6DFA" fill-opacity=".15"></circle>
+        <circle cx="{{ homeEnd.x }}" cy="{{ homeEnd.y }}" r="5" fill="#fff" stroke="#4D6DFA" stroke-width="2.6"></circle>
+      </svg>
+      <div style="display:flex;justify-content:space-between;padding:4px 16px 0;font-size:11px;color:#9AA0B4;font-weight:500"><span>Oct</span><span>Dec</span><span>Feb</span><span>Apr</span><span>Jun</span><span style="color:#304BC7;font-weight:700">Sep</span></div>
+    </div>
+
+    <button onClick="{{ goFinance }}" style="display:block;margin:26px 16px 0;width:calc(100% - 32px);text-align:left;border-radius:30px;padding:22px 22px 20px;box-sizing:border-box;background:linear-gradient(160deg,#3F5DE8 0%,#304BC7 55%,#23389F 100%);color:#fff;box-shadow:0 24px 40px -24px rgba(35,56,159,.8)" style-active="transform:scale(.99)">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+        <span style="font-weight:600;opacity:.85">September at a glance</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".7"><path d="m9 18 6-6-6-6"></path></svg>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:8px;margin-top:16px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Income</span><span style="font:700 19px Manrope">{{ month.inc }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Expenses</span><span style="font:700 19px Manrope">{{ month.exp }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Net cash flow</span><span style="font:800 25px Manrope;letter-spacing:-.6px">{{ month.net }}</span></div>
+      </div>
+      <div style="display:flex;gap:3px;height:6px;margin-top:14px;border-radius:3px;overflow:hidden"><span style="flex:{{ month.fi }};background:#fff"></span><span style="flex:{{ month.fe }};background:rgba(255,255,255,.3)"></span></div>
+      <div style="height:1px;background:rgba(255,255,255,.16);margin:18px 0 16px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font:800 22px Manrope">4</span><span style="font-size:12px;opacity:.7">Properties</span></div>
+        <div style="display:flex;flex-direction:column;gap:7px;align-items:flex-end">
+          <div style="display:flex;gap:3px">
+            <span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:#fff"></span><span style="width:12px;height:18px;border-radius:4px;background:rgba(255,255,255,.22)"></span><span style="width:12px;height:18px;border-radius:4px;background:rgba(255,255,255,.22)"></span>
+          </div>
+          <span style="font-size:12px;opacity:.8">10 of 12 units occupied</span>
+        </div>
+      </div>
+    </button>
+
+    <div style="padding:34px 24px 12px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font:800 20px Manrope;letter-spacing:-.4px">Needs your attention</span><span style="min-width:22px;height:22px;border-radius:11px;background:#E5484D;color:#fff;font:700 12px Manrope;display:flex;align-items:center;justify-content:center">{{ attnN }}</span></div>
+    </div>
+    <div style="margin:0 16px;background:#fff;border-radius:26px;padding:6px 0;box-shadow:0 1px 2px rgba(20,32,90,.05)">
+      <sc-for list="{{ attention }}" as="a" hint-placeholder-count="4">
+        <button onClick="{{ a.go }}" style="display:flex;align-items:center;gap:14px;width:100%;padding:12px 18px;text-align:left;border-top:{{ a.border }}">
+          <span style="flex:none;width:40px;height:40px;border-radius:14px;background:{{ a.tint }};color:{{ a.color }};display:flex;align-items:center;justify-content:center">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.icon }}"></path></svg>
+          </span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:15px;font-weight:600">{{ a.title }}</span>
+            <span style="font-size:13px;color:#6B7186;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.sub }}</span>
+          </span>
+          <span style="flex:none;font-size:12px;font-weight:700;color:{{ a.color }}">{{ a.when }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="padding:34px 24px 14px;display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font:800 20px Manrope;letter-spacing:-.4px">Your properties</span>
+      <button onClick="{{ goPortfolio }}" style="font-size:14px;font-weight:600;color:#304BC7">View all</button>
+    </div>
+    <div onScroll="{{ onCarScroll }}" style="display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;padding:6px 24px 20px;scroll-padding:0 24px">
+      <sc-for list="{{ carousel }}" as="p" hint-placeholder-count="3">
+        <button onClick="{{ p.open }}" style="flex:none;width:252px;height:320px;border-radius:30px;position:relative;overflow:hidden;scroll-snap-align:start;text-align:left;background:#dfe5f5 url({{ p.img }}) center/cover;transform:{{ p.tf }};transition:{{ tr }};box-shadow:{{ p.shadow }}">
+          <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,40,0) 40%,rgba(11,16,40,.82) 100%)"></span>
+          <span style="position:absolute;top:14px;left:14px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.88);font-size:11px;font-weight:700;color:{{ p.statusColor }};display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:3px;background:{{ p.statusColor }}"></span>{{ p.status }}</span>
+          <span style="position:absolute;left:18px;right:18px;bottom:18px;display:flex;flex-direction:column;gap:4px;color:#fff">
+            <span style="font:800 20px/1.15 Manrope;letter-spacing:-.4px">{{ p.name }}</span>
+            <span style="font-size:12px;opacity:.8">{{ p.location }}</span>
+            <span style="display:flex;justify-content:space-between;align-items:baseline;margin-top:10px">
+              <span style="font:800 20px Manrope">{{ p.value }}</span>
+              <span style="font-size:12px;opacity:.9">{{ p.net }} net/mo</span>
+            </span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="padding:20px 24px 8px"><span style="font:800 20px Manrope;letter-spacing:-.4px">Recent activity</span></div>
+    <div style="padding:0 24px 140px;display:flex;flex-direction:column">
+      <sc-for list="{{ activity }}" as="t" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #E4E8F4">
+          <span style="flex:none;width:38px;height:38px;border-radius:19px;background:{{ t.tint }};color:{{ t.color }};display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{ t.rot }})"><path d="M7 17 17 7M7 7h10v10"></path></svg></span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">{{ t.title }}</span><span style="font-size:12px;color:#6B7186">{{ t.sub }}</span></span>
+          <span style="font:700 15px Manrope;color:{{ t.amtColor }}">{{ t.amt }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPortfolio }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:62px 24px 0;display:flex;justify-content:space-between;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font:800 32px Manrope;letter-spacing:-1.2px">Portfolio</span>
+        <span style="font-size:14px;color:#6B7186">4 properties · Rs124.8M total value</span>
+      </div>
+      <button onClick="{{ openQA }}" aria-label="Add property" style="width:44px;height:44px;border-radius:22px;background:#E7EBFF;color:#304BC7;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+    </div>
+    <div style="margin:20px 16px 0;height:50px;border-radius:18px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 16px;box-shadow:0 1px 2px rgba(20,32,90,.05)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search by name or area" style="flex:1;border:0;outline:none;background:none;font-size:15px;color:#111830"></input>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:14px 16px 4px">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="6">
+        <button onClick="{{ f.pick }}" style="flex:none;height:36px;padding:0 16px;border-radius:18px;font-size:14px;font-weight:600;background:{{ f.bg }};color:{{ f.fg }};transition:{{ tr }}">{{ f.label }}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasFeatured }}">
+    <button onClick="{{ featured.open }}" style="display:block;width:calc(100% - 32px);margin:16px 16px 0;text-align:left;background:#fff;border-radius:32px;overflow:hidden;box-shadow:0 20px 40px -28px rgba(20,32,90,.45)">
+      <span style="display:block;position:relative;height:250px;background:#dfe5f5 url({{ featured.img }}) center/cover">
+        <span style="position:absolute;top:14px;left:14px;padding:6px 11px;border-radius:999px;background:rgba(17,24,48,.55);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;letter-spacing:.3px">HIGHEST YIELD</span>
+        <span style="position:absolute;bottom:14px;right:14px;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.92);font:800 17px Manrope;color:#111830">{{ featured.value }}</span>
+      </span>
+      <span style="display:flex;flex-direction:column;gap:16px;padding:18px 20px 20px">
+        <span style="display:flex;justify-content:space-between;gap:12px">
+          <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+            <span style="font:800 22px Manrope;letter-spacing:-.5px">{{ featured.name }}</span>
+            <span style="font-size:13px;color:#6B7186">{{ featured.location }} · {{ featured.typeLabel }}</span>
+          </span>
+          <span style="flex:none;position:relative;width:56px;height:56px">
+            <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#E7EBFF" stroke-width="5"></circle><circle cx="28" cy="28" r="24" fill="none" stroke="#4D6DFA" stroke-width="5" stroke-linecap="round" stroke-dasharray="{{ featured.ring }}" transform="rotate(-90 28 28)"></circle></svg>
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 13px Manrope;color:#304BC7">{{ featured.yield }}</span>
+          </span>
+        </span>
+        <span style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #E4E8F4">
+          <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6B7186">Net income</span><span style="font:800 26px Manrope;letter-spacing:-.8px;color:#304BC7">{{ featured.net }}<span style="font-size:14px;color:#9AA0B4;font-weight:600">/mo</span></span></span>
+          <span style="display:flex;gap:18px;font-size:12px;color:#6B7186;text-align:right">
+            <span style="display:flex;flex-direction:column;gap:2px">Rent<span style="font:700 15px Manrope;color:#111830">{{ featured.rent }}</span></span>
+            <span style="display:flex;flex-direction:column;gap:2px">Costs<span style="font:700 15px Manrope;color:#111830">{{ featured.exp }}</span></span>
+          </span>
+        </span>
+      </span>
+    </button>
+    </sc-if>
+
+    <sc-if value="{{ hasRest }}">
+    <div style="padding:28px 24px 10px;font:800 18px Manrope;letter-spacing:-.3px">All properties</div>
+    </sc-if>
+    <div style="display:flex;flex-direction:column;gap:10px;padding:0 16px">
+      <sc-for list="{{ rest }}" as="p" hint-placeholder-count="3">
+        <button onClick="{{ p.open }}" style="display:flex;gap:14px;align-items:center;padding:10px;padding-right:16px;border-radius:24px;background:#fff;text-align:left;box-shadow:0 1px 2px rgba(20,32,90,.05)" style-active="transform:scale(.985)">
+          <span style="flex:none;width:84px;height:84px;border-radius:18px;background:#dfe5f5 url({{ p.img }}) center/cover"></span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+            <span style="font:700 16px Manrope;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span>
+            <span style="font-size:12px;color:#6B7186;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.location }}</span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:{{ p.statusColor }};margin-top:4px"><span style="width:6px;height:6px;border-radius:3px;background:{{ p.statusColor }}"></span>{{ p.status }} · {{ p.value }}</span>
+          </span>
+          <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+            <span style="font:800 16px Manrope">{{ p.net }}</span>
+            <span style="font-size:11px;color:#6B7186">net / mo</span>
+            <span style="font-size:12px;font-weight:700;color:#1B8A55">{{ p.yield }}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isEmpty }}">
+    <div style="margin:24px 16px;padding:40px 28px;border-radius:30px;background:#fff;display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+      <span style="width:52px;height:52px;border-radius:18px;background:#E7EBFF;color:#304BC7;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M5 20V9l7-5 7 5v11"></path></svg></span>
+      <span style="font:800 20px Manrope;letter-spacing:-.4px;margin-top:6px">Nothing here yet</span>
+      <span style="font-size:14px;color:#6B7186;line-height:1.5">No properties match this view. Add one and it will appear with its value and income.</span>
+      <button onClick="{{ openQA }}" style="margin-top:8px;height:46px;padding:0 18px;border-radius:16px;background:#4D6DFA;color:#fff;font-weight:700;font-size:15px">Add a property</button>
+    </div>
+    </sc-if>
+    <div style="height:140px"></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="position:relative;height:420px;background:#dfe5f5 url({{ dp.img }}) center/cover">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,40,.4) 0%,rgba(11,16,40,0) 28%,rgba(11,16,40,0) 50%,rgba(11,16,40,.75) 100%)"></div>
+      <div style="position:absolute;top:58px;left:16px;right:16px;display:flex;justify-content:space-between">
+        <button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:rgba(255,255,255,.22);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+        <div style="display:flex;gap:6px;align-items:center;padding:0 12px;height:32px;margin-top:6px;border-radius:16px;background:rgba(255,255,255,.22);backdrop-filter:blur(12px);color:#fff;font-size:12px;font-weight:600">1 / 3 photos</div>
+      </div>
+      <div style="position:absolute;left:24px;right:24px;bottom:52px;display:flex;flex-direction:column;gap:6px;color:#fff">
+        <span style="align-self:flex-start;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.9);color:{{ dp.statusColor }};font-size:11px;font-weight:700"><span style="width:6px;height:6px;border-radius:3px;background:{{ dp.statusColor }}"></span>{{ dp.status }} · {{ dp.typeLabel }}</span>
+        <span style="font:800 32px/1.08 Manrope;letter-spacing:-1px;text-wrap:pretty">{{ dp.name }}</span>
+        <span style="font-size:14px;opacity:.85">{{ dp.address }}</span>
+      </div>
+    </div>
+    <div style="position:relative;margin-top:-30px;border-radius:30px 30px 0 0;background:#F3F6FE;padding:26px 16px 60px;display:flex;flex-direction:column;gap:14px">
+      <div style="padding:0 8px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:13px;font-weight:600;color:#6B7186">Current value</span>
+          <span style="font:800 40px/1 Manrope;letter-spacing:-1.6px">{{ dp.value }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <span style="padding:4px 9px;border-radius:999px;background:#E3F5EC;color:#1B8A55;font-size:13px;font-weight:700">+{{ dp.gain }}</span>
+          <span style="font-size:12px;color:#6B7186">vs {{ dp.purchase }} paid</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:26px;display:grid;grid-template-columns:1fr 1fr;margin-top:8px">
+        <div style="padding:18px 20px;border-right:1px solid #E4E8F4;border-bottom:1px solid #E4E8F4;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6B7186">Monthly rent</span><span style="font:800 21px Manrope">{{ dp.rent }}</span></div>
+        <div style="padding:18px 20px;border-bottom:1px solid #E4E8F4;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6B7186">Monthly expenses</span><span style="font:800 21px Manrope">{{ dp.exp }}</span></div>
+        <div style="padding:18px 20px;border-right:1px solid #E4E8F4;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6B7186">Net income</span><span style="font:800 21px Manrope;color:#304BC7">{{ dp.net }}</span></div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#6B7186">Rental yield</span><span style="font:800 21px Manrope;color:#1B8A55">{{ dp.yield }}</span></div>
+      </div>
+
+      <div style="background:#fff;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font:800 17px Manrope">Performance</span>
+          <div style="display:flex;background:#F1F3FF;border-radius:12px;padding:3px">
+            <sc-for list="{{ perfTabs }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.pick }}" style="height:28px;padding:0 10px;border-radius:9px;font-size:12px;font-weight:700;background:{{ t.bg }};color:{{ t.fg }};box-shadow:{{ t.sh }};transition:{{ tr }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font:800 24px Manrope;letter-spacing:-.5px">{{ perf.head }}</span><span style="font-size:12px;color:#6B7186">{{ perf.sub }}</span></div>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:110px">
+          <sc-for list="{{ perf.bars }}" as="b" hint-placeholder-count="8">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+              <div style="width:100%;height:{{ b.h }};border-radius:8px;background:{{ b.c }};transition:height 420ms cubic-bezier(.2,.8,.2,1);transform-origin:bottom;animation:{{ aGrow }}"></div>
+              <span style="font-size:10px;color:#9AA0B4">{{ b.l }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:800 17px Manrope">Tenancy</span>
+        <sc-if value="{{ dp.hasTenant }}">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="flex:none;width:44px;height:44px;border-radius:22px;background:#E7EBFF;color:#304BC7;font:800 15px Manrope;display:flex;align-items:center;justify-content:center">{{ dp.initials }}</span>
+            <span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">{{ dp.tenant }}</span><span style="font-size:12px;color:#6B7186">{{ dp.lease }}</span></span>
+            <span style="padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;background:{{ dp.rentTint }};color:{{ dp.rentColor }}">{{ dp.rentStatus }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="height:6px;border-radius:3px;background:#E7EBFF;overflow:hidden"><div style="width:{{ dp.leasePct }};height:100%;border-radius:3px;background:#4D6DFA"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#6B7186"><span>Lease progress</span><span>{{ dp.leaseLeft }}</span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ dp.vacant }}">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:600">Vacant for 12 days</span><span style="font-size:13px;color:#6B7186;line-height:1.5">Last rent Rs95K. Add a tenant when a lease is signed.</span></div>
+          <button onClick="{{ addLeaseHere }}" style="align-self:flex-start;height:40px;padding:0 16px;border-radius:14px;background:#4D6DFA;color:#fff;font-weight:700;font-size:14px">Mark as rented</button>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ dp.hasTimeline }}">
+      <div style="background:#fff;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font:800 17px Manrope">Rental timeline</span>
+          <sc-if value="{{ dp.isLate }}"><button onClick="{{ dp.goOverdue }}" style="height:30px;padding:0 12px;border-radius:10px;background:#FCE7E8;color:#D23B40;font-size:12px;font-weight:700">Resolve overdue</button></sc-if>
+        </div>
+        <sc-for list="{{ dp.timeline }}" as="e" hint-placeholder-count="5">
+          <div style="display:flex;gap:14px">
+            <div style="display:flex;flex-direction:column;align-items:center;width:12px"><span style="flex:none;width:12px;height:12px;border-radius:6px;background:{{ e.color }}"></span><span style="flex:1;width:2px;background:{{ e.line }}"></span></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding-bottom:16px">
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600;line-height:1.1">{{ e.title }}</span><span style="font-size:12px;color:#6B7186">{{ e.meta }}</span></span>
+              <sc-if value="{{ e.hasDots }}"><span style="display:flex;gap:4px"><sc-for list="{{ e.dots }}" as="d" hint-placeholder-count="9"><span style="flex:1;height:8px;border-radius:4px;background:{{ d.c }}"></span></sc-for></span></sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <div style="background:#fff;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:4px">
+        <span style="font:800 17px Manrope;margin-bottom:10px">Maintenance</span>
+        <sc-for list="{{ dp.maint }}" as="m" hint-placeholder-count="2">
+          <div style="display:flex;gap:14px">
+            <div style="display:flex;flex-direction:column;align-items:center;width:12px"><span style="width:12px;height:12px;border-radius:6px;border:3px solid {{ m.color }};box-sizing:border-box;background:#fff"></span><span style="flex:1;width:2px;background:{{ m.line }}"></span></div>
+            <div style="flex:1;display:flex;justify-content:space-between;gap:10px;padding-bottom:16px">
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600;line-height:1.1">{{ m.title }}</span><span style="font-size:12px;color:#6B7186">{{ m.meta }}</span></div>
+              <span style="font:700 14px Manrope">{{ m.cost }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:800 17px Manrope;padding:6px 8px 0">Documents</span>
+        <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px">
+          <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+            <div style="flex:none;width:132px;padding:16px;border-radius:22px;background:#fff;display:flex;flex-direction:column;gap:18px">
+              <span style="width:36px;height:44px;border-radius:8px;background:#F1F3FF;border:1px solid #DDE3F3;display:flex;align-items:flex-end;padding:0 0 6px 6px;box-sizing:border-box;font:800 8px Manrope;color:#304BC7">PDF</span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600">{{ d.name }}</span><span style="font-size:11px;color:{{ d.color }}">{{ d.meta }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <button onClick="{{ goAI }}" style="margin-top:6px;text-align:left;border-radius:26px;padding:20px;background:#E7EBFF;display:flex;flex-direction:column;gap:10px">
+        <span style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#304BC7;letter-spacing:.3px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg>HOMELY INTELLIGENCE</span>
+        <span style="font:700 18px/1.35 Manrope;letter-spacing:-.3px;color:#111830;text-wrap:pretty">{{ dp.insight }}</span>
+        <span style="font-size:12px;color:#4A5170">From your recorded data · Ask a follow-up →</span>
+      </button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isFinance }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:62px 24px 0;display:flex;justify-content:space-between;align-items:center">
+      <span style="font:800 32px Manrope;letter-spacing:-1.2px">Finance</span>
+      <div style="position:relative;display:flex;background:#fff;border-radius:14px;padding:3px;box-shadow:0 1px 2px rgba(20,32,90,.05)">
+        <span style="position:absolute;top:3px;left:3px;width:42px;height:30px;border-radius:11px;background:#111830;transform:translateX({{ rangeX }});transition:{{ tr }}"></span>
+        <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="4">
+          <button onClick="{{ r.pick }}" style="position:relative;width:42px;height:30px;font-size:12px;font-weight:700;color:{{ r.fg }};transition:color 200ms">{{ r.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:13px;font-weight:600;color:#6B7186">Net cash flow · September</span>
+      <div style="display:flex;align-items:flex-start;gap:4px;font-family:Manrope">
+        <span style="font-size:26px;font-weight:700;color:#9AA0B4;margin-top:8px">Rs</span>
+        <span style="font-size:58px;font-weight:800;letter-spacing:-2.6px;line-height:1">{{ finTxt }}</span>
+        <span style="font-size:26px;font-weight:700;color:#9AA0B4;margin-top:8px">K</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="padding:4px 9px;border-radius:999px;background:#E3F5EC;color:#1B8A55;font-weight:700">+12%</span><span style="color:#6B7186">vs August · 74% of income kept</span></div>
+    </div>
+
+    <div style="margin:22px 16px 0;background:#fff;border-radius:30px;padding:20px 18px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6B7186">{{ finSelData.label }}</span><span style="font:800 18px Manrope">{{ finSelData.net }} <span style="font-size:13px;font-weight:600;color:#9AA0B4">net</span></span></div>
+        <div style="display:flex;gap:12px;font-size:12px;color:#4A5170">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:3px;background:#4D6DFA"></span>{{ finSelData.inc }}</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:3px;background:#111830"></span>{{ finSelData.exp }}</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:180px;margin-top:18px">
+        <sc-for list="{{ finBars }}" as="b" hint-placeholder-count="6">
+          <button onClick="{{ b.pick }}" style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;opacity:{{ b.op }};transition:opacity 200ms">
+            <span style="display:flex;align-items:flex-end;gap:3px;height:100%;width:100%;justify-content:center">
+              <span style="width:{{ b.w }};height:{{ b.hi }};border-radius:7px;background:#4D6DFA;transition:height 450ms cubic-bezier(.2,.8,.2,1);transform-origin:bottom;animation:{{ aGrow }}"></span>
+              <span style="width:{{ b.w }};height:{{ b.he }};border-radius:7px;background:#111830;transition:height 450ms cubic-bezier(.2,.8,.2,1);transform-origin:bottom;animation:{{ aGrow }}"></span>
+            </span>
+            <span style="font-size:10px;font-weight:600;color:{{ b.lc }}">{{ b.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:18px;padding-top:16px;border-top:1px solid #E4E8F4">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Income · {{ range }}</span><span style="font:800 16px Manrope">{{ tot.inc }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Expenses</span><span style="font:800 16px Manrope">{{ tot.exp }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Net</span><span style="font:800 16px Manrope;color:#304BC7">{{ tot.net }}</span></div>
+      </div>
+    </div>
+
+    <div style="padding:30px 24px 12px;font:800 20px Manrope;letter-spacing:-.4px">What changed</div>
+    <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:0 16px 4px;scroll-snap-type:x mandatory;scroll-padding:0 16px">
+      <sc-for list="{{ insights }}" as="i" hint-placeholder-count="4">
+        <div style="flex:none;width:250px;scroll-snap-align:start;padding:20px;border-radius:26px;background:{{ i.bg }};color:{{ i.fg }};display:flex;flex-direction:column;gap:10px">
+          <span style="font:800 36px/1 Manrope;letter-spacing:-1.4px">{{ i.stat }}</span>
+          <span style="font-size:14px;line-height:1.45;text-wrap:pretty">{{ i.text }}</span>
+          <span style="font-size:11px;opacity:.65">{{ i.src }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin:22px 16px 0;background:#fff;border-radius:30px;padding:20px;display:flex;gap:18px;align-items:center">
+      <div style="position:relative;flex:none;width:128px;height:128px">
+        <svg width="128" height="128" viewBox="0 0 128 128" style="transform:rotate(-90deg)">
+          <circle cx="64" cy="64" r="54" fill="none" stroke="#4D6DFA" stroke-width="14" stroke-dasharray="149.7 339.3" stroke-dashoffset="0"></circle>
+          <circle cx="64" cy="64" r="54" fill="none" stroke="#9EAEFF" stroke-width="14" stroke-dasharray="92 339.3" stroke-dashoffset="-152.7"></circle>
+          <circle cx="64" cy="64" r="54" fill="none" stroke="#111830" stroke-width="14" stroke-dasharray="54.7 339.3" stroke-dashoffset="-247.7"></circle>
+          <circle cx="64" cy="64" r="54" fill="none" stroke="#C9D3FF" stroke-width="14" stroke-dasharray="30.9 339.3" stroke-dashoffset="-305.4"></circle>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font:800 18px Manrope">Rs218K</span><span style="font-size:11px;color:#6B7186">expenses</span></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;font-size:13px">
+        <div style="display:flex;justify-content:space-between"><span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:3px;background:#4D6DFA"></span>Maintenance</span><span style="font-weight:700">45%</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:3px;background:#9EAEFF"></span>Utilities</span><span style="font-weight:700">28%</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:3px;background:#111830"></span>Property tax</span><span style="font-weight:700">17%</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:3px;background:#C9D3FF"></span>Repairs</span><span style="font-weight:700">10%</span></div>
+      </div>
+    </div>
+
+    <div style="padding:30px 24px 6px;font:800 20px Manrope;letter-spacing:-.4px">Transactions</div>
+    <div style="padding:0 24px 140px;display:flex;flex-direction:column">
+      <sc-for list="{{ txns }}" as="t" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #E4E8F4">
+          <span style="flex:none;width:38px;height:38px;border-radius:19px;background:{{ t.tint }};color:{{ t.color }};display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{ t.rot }})"><path d="M7 17 17 7M7 7h10v10"></path></svg></span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">{{ t.title }}</span><span style="font-size:12px;color:#6B7186">{{ t.sub }}</span></span>
+          <span style="font:700 15px Manrope;color:{{ t.amtColor }}">{{ t.amt }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMore }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:62px 24px 0;display:flex;flex-direction:column;gap:4px">
+      <span style="font:800 32px Manrope;letter-spacing:-1.2px">Operating System</span>
+      <span style="font-size:14px;color:#6B7186">Everything that keeps your portfolio running.</span>
+    </div>
+    <button onClick="{{ toastProfile }}" style="display:flex;align-items:center;gap:14px;margin:22px 16px 0;width:calc(100% - 32px);padding:14px;border-radius:26px;background:#fff;text-align:left">
+      <span style="flex:none;width:56px;height:56px;border-radius:28px;background:url(https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop) center/cover"></span>
+      <span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:800 18px Manrope">John Malik</span><span style="font-size:13px;color:#6B7186">Owner · 4 properties · Lahore</span></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+    </button>
+
+    <div style="padding:26px 24px 10px;font:700 11px Manrope;letter-spacing:1.4px;color:#6B7186">OPERATIONS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px">
+      <sc-for list="{{ ops }}" as="o" hint-placeholder-count="4">
+        <button onClick="{{ o.go }}" style="padding:16px;border-radius:24px;background:#fff;text-align:left;display:flex;flex-direction:column;gap:14px" style-active="transform:scale(.98)">
+          <span style="display:flex;justify-content:space-between;align-items:center">
+            <span style="width:36px;height:36px;border-radius:12px;background:#F1F3FF;color:#304BC7;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ o.icon }}"></path></svg></span>
+            <span style="font-size:11px;font-weight:700;color:{{ o.flagColor }}">{{ o.flag }}</span>
+          </span>
+          <span style="display:flex;flex-direction:column;gap:1px"><span style="font:800 28px Manrope;letter-spacing:-.8px">{{ o.count }}</span><span style="font-size:14px;font-weight:600">{{ o.label }}</span><span style="font-size:12px;color:#6B7186">{{ o.sub }}</span></span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="padding:26px 24px 10px;font:700 11px Manrope;letter-spacing:1.4px;color:#6B7186">INTELLIGENCE</div>
+    <button onClick="{{ goAI }}" style="display:flex;align-items:center;gap:16px;margin:0 16px;width:calc(100% - 32px);padding:20px;border-radius:26px;text-align:left;background:linear-gradient(160deg,#3F5DE8 0%,#304BC7 60%,#23389F 100%);color:#fff">
+      <span style="flex:none;position:relative;width:52px;height:52px;border-radius:26px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center"><span style="position:absolute;inset:8px;border-radius:18px;background:rgba(255,255,255,.18)"></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:relative"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg></span>
+      <span style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font:800 17px Manrope">Portfolio Intelligence</span><span style="font-size:13px;opacity:.8">3 new insights · Ask your portfolio</span></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".7"><path d="m9 18 6-6-6-6"></path></svg>
+    </button>
+
+    <sc-for list="{{ menuGroups }}" as="g" hint-placeholder-count="2">
+      <div style="padding:26px 24px 10px;font:700 11px Manrope;letter-spacing:1.4px;color:#6B7186">{{ g.title }}</div>
+      <div style="margin:0 16px;background:#fff;border-radius:24px;padding:4px 0">
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+          <button onClick="{{ it.go }}" style="display:flex;align-items:center;gap:14px;width:100%;padding:13px 18px;text-align:left;border-top:{{ it.border }}">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#304BC7" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ it.icon }}"></path></svg>
+            <span style="flex:1;font-size:15px;font-weight:500">{{ it.label }}</span>
+            <span style="font-size:13px;color:#9AA0B4">{{ it.val }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0C6D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+        </sc-for>
+      </div>
+    </sc-for>
+
+    <div style="margin:22px 16px 0;padding:18px 20px;border-radius:24px;background:#E7EBFF;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span style="display:flex;flex-direction:column;gap:2px"><span style="font:800 15px Manrope;color:#23389F">Homely Pro</span><span style="font-size:12px;color:#4A5170">Unlimited properties, reports and intelligence</span></span>
+      <button onClick="{{ toastPro }}" style="flex:none;height:36px;padding:0 14px;border-radius:12px;background:#304BC7;color:#fff;font-size:13px;font-weight:700">Upgrade</button>
+    </div>
+    <div style="height:140px"></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAI }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;animation:{{ aIn }}">
+    <div style="padding:58px 16px 8px;display:flex;align-items:center;gap:12px">
+      <button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+      <span style="font:800 17px Manrope">Intelligence</span>
+    </div>
+    <div ref="{{ chatRef }}" style="flex:1;overflow-y:auto;scrollbar-width:none;padding:8px 16px 16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px 8px 6px">
+        <div style="position:relative;width:64px;height:64px;border-radius:32px;background:#E7EBFF;display:flex;align-items:center;justify-content:center"><span style="position:absolute;inset:10px;border-radius:22px;background:#C9D3FF"></span><span style="position:absolute;inset:20px;border-radius:12px;background:#4D6DFA"></span></div>
+        <span style="font:800 28px/1.1 Manrope;letter-spacing:-1px">Ask your portfolio</span>
+        <span style="font-size:14px;color:#6B7186;line-height:1.5">Answers come from the data you've recorded in Homely. Not financial advice.</span>
+      </div>
+      <sc-if value="{{ noChat }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ aiCards }}" as="c" hint-placeholder-count="3">
+            <div style="padding:16px 18px;border-radius:22px;background:#fff;display:flex;gap:14px;align-items:flex-start">
+              <span style="flex:none;font:800 20px Manrope;color:#304BC7;min-width:62px">{{ c.stat }}</span>
+              <span style="font-size:14px;line-height:1.45;color:#111830">{{ c.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-for list="{{ chat }}" as="m" hint-placeholder-count="0">
+        <div style="display:flex;justify-content:{{ m.align }};animation:{{ aFade }}">
+          <div style="max-width:85%;padding:12px 16px;border-radius:{{ m.radius }};background:{{ m.bg }};color:{{ m.fg }};font-size:15px;line-height:1.45;display:flex;flex-direction:column;gap:6px">
+            <span>{{ m.text }}</span>
+            <span style="font-size:11px;opacity:.6">{{ m.note }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 16px 10px">
+      <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+        <button onClick="{{ s.ask }}" style="flex:none;padding:9px 14px;border-radius:16px;background:#fff;border:1px solid #DDE3F3;font-size:13px;font-weight:600;color:#304BC7" style-hover="background:#F1F3FF">{{ s.q }}</button>
+      </sc-for>
+    </div>
+    <div style="padding:0 16px 34px;display:flex;gap:10px">
+      <div style="flex:1;height:52px;border-radius:26px;background:#fff;display:flex;align-items:center;padding:0 18px;box-shadow:0 1px 2px rgba(20,32,90,.06)">
+        <input value="{{ typed }}" onChange="{{ onType }}" onKeyDown="{{ onKey }}" placeholder="Ask about rent, costs, leases…" style="flex:1;border:0;outline:none;background:none;font-size:15px;color:#111830"></input>
+      </div>
+      <button onClick="{{ sendTyped }}" aria-label="Send" style="flex:none;width:52px;height:52px;border-radius:26px;background:#4D6DFA;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isForm }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#F3F6FE;animation:{{ aIn }}">
+    <div style="padding:58px 16px 0;display:flex;align-items:center;justify-content:space-between">
+      <div style="min-width:64px"><button onClick="{{ goBack }}" aria-label="Close" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button></div>
+      <span style="font:700 15px Manrope">{{ fTitle }}</span>
+      <span style="min-width:64px;font-size:12px;color:#6B7186;text-align:right;white-space:nowrap">{{ fCount }}</span>
+    </div>
+    <sc-if value="{{ fMulti }}">
+      <div style="display:flex;gap:4px;padding:16px 24px 0"><sc-for list="{{ fBars }}" as="b" hint-placeholder-count="5"><span style="flex:1;height:4px;border-radius:2px;background:{{ b.bg }};transition:background 300ms"></span></sc-for></div>
+    </sc-if>
+    <div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:22px 24px 24px;display:flex;flex-direction:column;gap:20px">
+      <span style="font:800 28px/1.1 Manrope;letter-spacing:-1px">{{ fStep }}</span>
+      <sc-for list="{{ fFields }}" as="f" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:600;color:#4A5170">{{ f.label }}</span>
+          <sc-if value="{{ f.isText }}"><input value="{{ f.val }}" onChange="{{ f.onInput }}" placeholder="{{ f.ph }}" style="height:50px;border-radius:16px;border:1px solid #DDE3F3;background:#fff;padding:0 16px;font-size:16px;color:#111830;outline:none" style-focus="border-color:#4D6DFA"></input></sc-if>
+          <sc-if value="{{ f.isMoney }}"><div style="height:56px;border-radius:16px;border:1px solid #DDE3F3;background:#fff;display:flex;align-items:center;gap:8px;padding:0 16px"><span style="font:700 16px Manrope;color:#9AA0B4">Rs</span><input value="{{ f.val }}" onChange="{{ f.onInput }}" placeholder="0" inputmode="numeric" style="flex:1;border:0;outline:none;background:none;font:800 22px Manrope;color:#111830;min-width:0"></input></div></sc-if>
+          <sc-if value="{{ f.isDate }}"><input type="date" value="{{ f.val }}" onChange="{{ f.onInput }}" style="height:50px;border-radius:16px;border:1px solid #DDE3F3;background:#fff;padding:0 16px;font-size:16px;color:#111830;outline:none"></input></sc-if>
+          <sc-if value="{{ f.isTime }}"><input type="time" value="{{ f.val }}" onChange="{{ f.onInput }}" style="height:50px;border-radius:16px;border:1px solid #DDE3F3;background:#fff;padding:0 16px;font-size:16px;color:#111830;outline:none"></input></sc-if>
+          <sc-if value="{{ f.isNote }}"><textarea value="{{ f.val }}" onChange="{{ f.onInput }}" placeholder="{{ f.ph }}" rows="3" style="border-radius:16px;border:1px solid #DDE3F3;background:#fff;padding:14px 16px;font:inherit;font-size:15px;color:#111830;outline:none;resize:none"></textarea></sc-if>
+          <sc-if value="{{ f.isSeg }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="flex:1 0 auto;height:42px;padding:0 14px;border-radius:14px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:14px;font-weight:600;transition:{{ tr }}">{{ o.label }}</button></sc-for></div></sc-if>
+          <sc-if value="{{ f.isChips }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.pick }}" style="height:36px;padding:0 14px;border-radius:18px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:13px;font-weight:600;transition:{{ tr }}">{{ o.label }}</button></sc-for></div></sc-if>
+          <sc-if value="{{ f.isProp }}"><div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -24px;padding:0 24px"><sc-for list="{{ f.props }}" as="p" hint-placeholder-count="4"><button onClick="{{ p.pick }}" style="flex:none;width:118px;display:flex;flex-direction:column;gap:6px;text-align:left;opacity:{{ p.op }};transition:opacity 200ms"><span style="width:118px;height:80px;border-radius:16px;background:#dfe5f5 url({{ p.img }}) center/cover;box-shadow:0 0 0 3px {{ p.bd }};transition:box-shadow 200ms"></span><span style="font-size:12px;font-weight:600;line-height:1.25">{{ p.name }}</span></button></sc-for></div></sc-if>
+          <sc-if value="{{ f.isToggle }}"><button onClick="{{ f.toggle }}" aria-label="{{ f.label }}" style="align-self:flex-start;width:52px;height:32px;border-radius:16px;background:{{ f.tBg }};padding:3px;transition:background 200ms"><span style="display:block;width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transform:translateX({{ f.tX }});transition:transform 220ms cubic-bezier(.2,.8,.2,1)"></span></button></sc-if>
+          <sc-if value="{{ f.isUpload }}"><button onClick="{{ f.upload }}" style="border-radius:20px;border:1.5px dashed #9EAEFF;background:#F7F9FF;padding:18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left"><sc-if value="{{ f.hasUploads }}"><span style="display:flex;gap:8px"><sc-for list="{{ f.thumbs }}" as="t" hint-placeholder-count="0"><span style="width:62px;height:62px;border-radius:14px;background:#dfe5f5 url({{ t.img }}) center/cover"></span></sc-for></span></sc-if><span style="display:flex;align-items:center;gap:10px;color:#304BC7;font-size:14px;font-weight:600"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"></path></svg>{{ f.upLabel }}</span></button></sc-if>
+          <sc-if value="{{ f.isMap }}"><div style="position:relative;height:150px;border-radius:20px;overflow:hidden;background:#E3E9F8"><div style="position:absolute;inset:0;background-image:linear-gradient(#D3DCF2 2px,transparent 2px),linear-gradient(90deg,#D3DCF2 2px,transparent 2px);background-size:46px 38px;transform:rotate(-12deg) scale(1.3)"></div><div style="position:absolute;left:0;right:0;top:62px;height:14px;background:#fff;transform:rotate(-12deg) scale(1.3)"></div><div style="position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-34px 0 0 -20px;border-radius:20px 20px 20px 4px;transform:rotate(-45deg);background:#4D6DFA;box-shadow:0 8px 16px -6px rgba(48,75,199,.7)"></div><span style="position:absolute;left:12px;bottom:12px;padding:6px 10px;border-radius:10px;background:#fff;font-size:12px;font-weight:600">Drag the pin to adjust</span></div></sc-if>
+          <sc-if value="{{ f.isRemind }}"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><sc-for list="{{ f.timing }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" style="height:48px;border-radius:14px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;padding:0 14px;transition:{{ tr }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="{{ o.check }}"><path d="M5 12l5 5L20 7"></path></svg>{{ o.label }}</button></sc-for></div></sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ fReview }}">
+        <sc-if value="{{ fIsPropReview }}">
+          <div style="border-radius:28px;overflow:hidden;background:#fff">
+            <div style="position:relative;height:170px;background:#dfe5f5 url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop) center/cover"><span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,40,0) 40%,rgba(11,16,40,.75))"></span><span style="position:absolute;left:18px;bottom:14px;right:18px;display:flex;flex-direction:column;gap:2px;color:#fff"><span style="font:800 22px Manrope">{{ fName }}</span><span style="font-size:12px;opacity:.85">{{ fLoc }}</span></span></div>
+            <div style="padding:6px 18px 10px">
+              <sc-for list="{{ fRows }}" as="r" hint-placeholder-count="8"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #EEF1F8;font-size:14px"><span style="color:#6B7186">{{ r.k }}</span><span style="font-weight:600;text-align:right">{{ r.val }}</span></div></sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ fIsLeaseReview }}">
+          <div style="border-radius:28px;padding:22px;background:linear-gradient(160deg,#3F5DE8 0%,#304BC7 60%,#23389F 100%);color:#fff;display:flex;flex-direction:column;gap:16px">
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;opacity:.75">{{ lease.prop }} · {{ lease.tenant }}</span><span style="font:800 30px Manrope;letter-spacing:-1px">{{ lease.rent }}<span style="font-size:15px;opacity:.7"> / month</span></span></span>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)">
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;opacity:.7">Lease starts</span><span style="font:700 14px Manrope">{{ lease.start }}</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;opacity:.7">Rent due</span><span style="font:700 14px Manrope">{{ lease.due }}</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;opacity:.7">Lease ends</span><span style="font:700 14px Manrope">{{ lease.end }}</span></span>
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:24px;padding:6px 18px 10px"><sc-for list="{{ fRows }}" as="r" hint-placeholder-count="6"><div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #EEF1F8;font-size:14px"><span style="color:#6B7186">{{ r.k }}</span><span style="font-weight:600;text-align:right">{{ r.val }}</span></div></sc-for></div>
+        </sc-if>
+      </sc-if>
+    </div>
+    <div style="padding:12px 24px 34px;display:flex;flex-direction:column;gap:10px;background:#F3F6FE;border-top:1px solid #E4E8F4">
+      <span style="font-size:12px;color:#6B7186;display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4D6DFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path></svg>{{ fHint }}</span>
+      <div style="display:flex;gap:10px">
+        <sc-if value="{{ fHasPrev }}"><button onClick="{{ fPrev }}" style="flex:none;width:56px;height:56px;border-radius:20px;background:#fff;border:1px solid #DDE3F3;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button></sc-if>
+        <button onClick="{{ fNext }}" style="flex:1;height:56px;border-radius:20px;background:linear-gradient(150deg,#4D6DFA,#304BC7);color:#fff;font:700 16px Manrope;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 14px 28px -14px rgba(48,75,199,.8)" style-active="transform:scale(.98)"><span>{{ fNextLabel }}</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isNotifs }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:58px 16px 0;display:flex;align-items:center;justify-content:space-between">
+      <button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+      <button onClick="{{ goNSet }}" aria-label="Notification settings" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="1.9" stroke-linecap="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg></button>
+    </div>
+    <div style="padding:16px 24px 0;display:flex;justify-content:space-between;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font:800 32px Manrope;letter-spacing:-1.2px">Notifications</span><span style="font-size:14px;color:#6B7186">{{ unreadN }} unread</span></div>
+      <sc-if value="{{ hasUnread }}"><button onClick="{{ markAllRead }}" style="font-size:14px;font-weight:600;color:#304BC7;padding-bottom:4px">Mark all read</button></sc-if>
+    </div>
+
+    <div style="padding:22px 24px 10px;font:700 11px Manrope;letter-spacing:1.4px;color:#6B7186">COMING UP · AUTO-SCHEDULED</div>
+    <div style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:0 16px 4px">
+      <sc-for list="{{ upcoming }}" as="r" hint-placeholder-count="3">
+        <button onClick="{{ r.open }}" style="flex:none;width:200px;padding:16px;border-radius:22px;background:#111830;color:#fff;text-align:left;display:flex;flex-direction:column;gap:10px">
+          <span style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:700;color:#9EAEFF;letter-spacing:.3px">{{ r.type }}</span><span style="font-size:11px;opacity:.7">{{ r.tag }}</span></span>
+          <span style="display:flex;flex-direction:column;gap:2px"><span style="font:800 16px Manrope">{{ r.title }}</span><span style="font-size:12px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.prop }}</span></span>
+          <span style="font:700 14px Manrope;color:#fff">{{ r.amount }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:22px 16px 12px">
+      <sc-for list="{{ notifChips }}" as="c" hint-placeholder-count="6">
+        <button onClick="{{ c.pick }}" style="flex:none;height:34px;padding:0 14px;border-radius:17px;font-size:13px;font-weight:600;background:{{ c.bg }};color:{{ c.fg }};transition:{{ tr }}">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:0 16px 60px">
+      <sc-for list="{{ notifList }}" as="n" hint-placeholder-count="5">
+        <button onClick="{{ n.open }}" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:22px;background:{{ n.bg }};text-align:left">
+          <span style="flex:none;width:40px;height:40px;border-radius:14px;background:{{ n.tint }};color:{{ n.color }};display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg></span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:{{ n.weight }}">{{ n.title }}</span><span style="font-size:12px;color:#6B7186;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.sub }}</span></span>
+          <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-size:11px;color:#9AA0B4">{{ n.time }}</span><span style="width:8px;height:8px;border-radius:4px;background:{{ n.dot }}"></span></span>
+        </button>
+      </sc-for>
+      <sc-if value="{{ noNotifs }}"><div style="padding:32px 20px;border-radius:22px;background:#fff;display:flex;flex-direction:column;gap:6px"><span style="font:800 17px Manrope">All quiet here</span><span style="font-size:14px;color:#6B7186">Nothing in this category right now.</span></div></sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isNSet }}">
+  <div style="position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;animation:{{ aIn }}">
+    <div style="padding:58px 16px 0"><button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button></div>
+    <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:4px"><span style="font:800 30px Manrope;letter-spacing:-1.1px">Notification settings</span><span style="font-size:14px;color:#6B7186">Choose what Homely tells you, and when.</span></div>
+    <div style="margin:22px 16px 0;background:#fff;border-radius:24px;padding:4px 0">
+      <sc-for list="{{ nsList }}" as="o" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:14px;padding:13px 18px;border-top:{{ o.border }}">
+          <span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">{{ o.label }}</span><span style="font-size:12px;color:#6B7186">{{ o.sub }}</span></span>
+          <button onClick="{{ o.toggle }}" aria-label="{{ o.label }}" style="flex:none;width:52px;height:32px;border-radius:16px;background:{{ o.tBg }};padding:3px;transition:background 200ms"><span style="display:block;width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transform:translateX({{ o.tX }});transition:transform 220ms cubic-bezier(.2,.8,.2,1)"></span></button>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:26px 24px 10px;font:700 11px Manrope;letter-spacing:1.4px;color:#6B7186">DEFAULT REMINDER TIMING</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 60px">
+      <sc-for list="{{ nsTiming }}" as="o" hint-placeholder-count="4">
+        <button onClick="{{ o.pick }}" style="height:48px;border-radius:14px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:14px;font-weight:600;text-align:left;padding:0 14px;transition:{{ tr }}">{{ o.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isReminder }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;animation:{{ aIn }}">
+    <div style="padding:58px 16px 0;display:flex;justify-content:space-between">
+      <button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+      <button onClick="{{ remEdit }}" style="height:44px;padding:0 18px;border-radius:22px;background:#fff;font-size:14px;font-weight:600;color:#304BC7">Edit</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:20px 16px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="padding:0 8px;display:flex;flex-direction:column;gap:8px">
+        <span style="align-self:flex-start;padding:5px 10px;border-radius:999px;background:#E7EBFF;color:{{ rem.statusColor }};font-size:12px;font-weight:700">{{ rem.type }} · {{ rem.status }}</span>
+        <span style="font:800 32px/1.08 Manrope;letter-spacing:-1.1px">{{ rem.title }}</span>
+        <button onClick="{{ remOpenProp }}" style="align-self:flex-start;font-size:15px;color:#304BC7;font-weight:600">{{ rem.prop }} →</button>
+      </div>
+      <div style="border-radius:26px;padding:22px;background:linear-gradient(160deg,#3F5DE8 0%,#304BC7 60%,#23389F 100%);color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Date</span><span style="font:800 20px Manrope">{{ rem.date }}</span></span>
+        <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Time</span><span style="font:800 20px Manrope">{{ rem.time }}</span></span>
+        <sc-if value="{{ rem.hasAmount }}"><span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Amount</span><span style="font:800 20px Manrope">{{ rem.amount }}</span></span></sc-if>
+        <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;opacity:.7">Repeats</span><span style="font:800 20px Manrope">{{ rem.repeat }}</span></span>
+      </div>
+      <div style="background:#fff;border-radius:24px;padding:4px 18px">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #EEF1F8"><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Notify me</span><span style="font-size:12px;color:#6B7186">{{ rem.src }}</span></span><button onClick="{{ remToggle }}" aria-label="Notify me" style="flex:none;width:52px;height:32px;border-radius:16px;background:{{ rem.tBg }};padding:3px;transition:background 200ms"><span style="display:block;width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transform:translateX({{ rem.tX }});transition:transform 220ms cubic-bezier(.2,.8,.2,1)"></span></button></div>
+        <sc-if value="{{ rem.hasNotes }}"><div style="display:flex;flex-direction:column;gap:4px;padding:14px 0"><span style="font-size:12px;color:#6B7186">Notes</span><span style="font-size:15px;line-height:1.45">{{ rem.notes }}</span></div></sc-if>
+      </div>
+      <button onClick="{{ remDelete }}" style="align-self:flex-start;padding:8px;font-size:14px;font-weight:600;color:#D23B40">Delete reminder</button>
+    </div>
+    <div style="padding:12px 24px 34px;display:flex;gap:10px;border-top:1px solid #E4E8F4">
+      <button onClick="{{ remSnooze }}" style="flex:1;height:56px;border-radius:20px;background:#fff;border:1px solid #DDE3F3;font:700 15px Manrope">Snooze</button>
+      <button onClick="{{ remComplete }}" style="flex:1.4;height:56px;border-radius:20px;background:linear-gradient(150deg,#4D6DFA,#304BC7);color:#fff;font:700 15px Manrope">Mark complete</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isOverdue }}">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;animation:{{ aIn }}">
+    <div style="padding:58px 16px 0"><button onClick="{{ goBack }}" aria-label="Back" style="width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111830" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button></div>
+    <div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:20px 16px;display:flex;flex-direction:column;gap:14px">
+      <sc-if value="{{ overdueOpen }}">
+        <div style="padding:0 8px;display:flex;flex-direction:column;gap:8px">
+          <span style="align-self:flex-start;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:#FCE7E8;color:#D23B40;font-size:12px;font-weight:700"><span style="width:6px;height:6px;border-radius:3px;background:#E5484D"></span>Overdue · 3 days</span>
+          <span style="font:800 30px/1.1 Manrope;letter-spacing:-1px">Rent overdue</span>
+          <span style="font-size:15px;color:#6B7186">LuxeApart Residencies · Unit 3</span>
+        </div>
+        <div style="background:#fff;border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:18px">
+          <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#6B7186">Amount due</span><span style="font:800 44px/1 Manrope;letter-spacing:-1.8px">Rs46,000</span></span>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding-top:16px;border-top:1px solid #EEF1F8">
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Due date</span><span style="font:700 14px Manrope">26 Sep 2026</span></span>
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Grace ended</span><span style="font:700 14px Manrope">29 Sep</span></span>
+            <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#6B7186">Days late</span><span style="font:700 14px Manrope;color:#D23B40">3</span></span>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px"><span style="flex:none;width:44px;height:44px;border-radius:22px;background:#E7EBFF;color:#304BC7;font:800 15px Manrope;display:flex;align-items:center;justify-content:center">AK</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:600">Ahmed Khan</span><span style="font-size:12px;color:#6B7186">Tenant since Mar 2024 · usually pays on time</span></span></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <a href="{{ telHref }}" style="height:64px;border-radius:18px;background:#F1F3FF;color:#304BC7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg>Call</a>
+            <a href="{{ smsHref }}" style="height:64px;border-radius:18px;background:#F1F3FF;color:#304BC7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Message</a>
+            <a href="{{ mailHref }}" style="height:64px;border-radius:18px;background:#F1F3FF;color:#304BC7;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><path d="m22 6-10 7L2 6"></path></svg>Email</a>
+          </div>
+          <span style="font-size:12px;color:#6B7186;line-height:1.45">Opens your phone, Messages or Mail with a drafted note. Nothing is sent until you tap send.</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ overduePaid }}">
+        <div style="padding:40px 8px 0;display:flex;flex-direction:column;gap:12px;animation:{{ aFade }}">
+          <span style="width:64px;height:64px;border-radius:32px;background:#E3F5EC;color:#1B8A55;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span>
+          <span style="font:800 30px/1.1 Manrope;letter-spacing:-1px">Rs46,000 recorded</span>
+          <span style="font-size:15px;color:#6B7186;line-height:1.5">LuxeApart Unit 3 is paid for September. Income, property financials and portfolio cash flow have been updated.</span>
+        </div>
+        <div style="background:#fff;border-radius:24px;padding:4px 18px">
+          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #EEF1F8;font-size:14px"><span style="color:#6B7186">September income</span><span style="font-weight:700">{{ month.inc }}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:14px 0;font-size:14px"><span style="color:#6B7186">Net cash flow</span><span style="font-weight:700;color:#304BC7">{{ month.net }}</span></div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="padding:12px 24px 34px;border-top:1px solid #E4E8F4">
+      <sc-if value="{{ overdueOpen }}"><button onClick="{{ markPaid }}" style="width:100%;height:56px;border-radius:20px;background:linear-gradient(150deg,#4D6DFA,#304BC7);color:#fff;font:700 16px Manrope;display:flex;align-items:center;justify-content:space-between;padding:0 20px"><span>Mark as paid</span><span style="font-size:13px;opacity:.8">Rs46,000</span></button></sc-if>
+      <sc-if value="{{ overduePaid }}"><button onClick="{{ goFinanceFromPaid }}" style="width:100%;height:56px;border-radius:20px;background:#111830;color:#fff;font:700 16px Manrope;display:flex;align-items:center;justify-content:space-between;padding:0 20px"><span>See updated cash flow</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button></sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="position:absolute;inset:0;z-index:25;background:rgba(17,24,48,.42);backdrop-filter:blur(8px);opacity:{{ qaOp }};pointer-events:{{ qaPe }};transition:opacity 240ms ease" onClick="{{ closeQA }}">
+    <div style="position:absolute;left:20px;right:20px;bottom:318px;display:flex;flex-direction:column;gap:14px;opacity:{{ qaOp }};transition:opacity 280ms ease 60ms">
+      <div style="display:flex;flex-direction:column;gap:3px;color:#fff">
+        <span style="font:800 26px Manrope;letter-spacing:-.8px">Add to your portfolio</span>
+        <span style="font-size:14px;opacity:.8">Everything you add links to a property.</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+        <sc-for list="{{ qaSecondary }}" as="q" hint-placeholder-count="4">
+          <button onClick="{{ q.act }}" style="height:78px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;transform:{{ q.tf }};transition:transform 320ms cubic-bezier(.2,.9,.25,1), background 160ms;transition-delay:{{ q.delay }}" style-hover="background:rgba(255,255,255,.24)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ q.icon }}"></path></svg>
+            <span style="font-size:11px;font-weight:700">{{ q.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <sc-for list="{{ qaItems }}" as="q" hint-placeholder-count="4">
+      <button onClick="{{ q.act }}" style="position:absolute;left:163px;bottom:34px;width:64px;display:flex;flex-direction:column;align-items:center;gap:6px;transform:{{ q.tf }};opacity:{{ qaOp }};transition:transform 380ms cubic-bezier(.2,.9,.25,1), opacity 220ms ease;transition-delay:{{ q.delay }}">
+        <span style="width:60px;height:60px;border-radius:30px;background:#fff;color:#304BC7;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px -10px rgba(0,0,0,.45)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ q.icon }}"></path></svg></span>
+        <span style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap">{{ q.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ showNav }}">
+  <div style="position:absolute;left:20px;right:20px;bottom:26px;height:70px;z-index:30;border-radius:35px;background:{{ nav.bg }};box-shadow:0 18px 40px -18px rgba(20,32,90,.45),0 0 0 1px {{ nav.ring }};display:flex;align-items:center;padding:0 7px;box-sizing:border-box">
+    <span style="position:absolute;top:9px;left:7px;width:58px;height:52px;border-radius:26px;background:{{ nav.ind }};transform:translateX({{ navX }});opacity:{{ navIndOp }};transition:transform 340ms cubic-bezier(.2,.8,.2,1),opacity 200ms"></span>
+    <button onClick="{{ goHome }}" aria-label="Home" style="position:relative;flex:1;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ navC.home }};transition:color 200ms">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg><span style="font-size:10px;font-weight:700">Home</span>
+    </button>
+    <button onClick="{{ goPortfolio }}" aria-label="Properties" style="position:relative;flex:1;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ navC.port }};transition:color 200ms">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M9 21v-4h6v4M8.5 7h1M14.5 7h1M8.5 11h1M14.5 11h1"></path></svg><span style="font-size:10px;font-weight:700">Properties</span>
+    </button>
+    <div style="flex:1;display:flex;justify-content:center">
+      <button onClick="{{ toggleQA }}" aria-label="Quick actions" style="width:58px;height:58px;border-radius:21px;background:linear-gradient(150deg,#4D6DFA,#304BC7);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 22px -8px rgba(48,75,199,.8);transform:rotate({{ plusRot }});transition:transform 320ms cubic-bezier(.2,.8,.2,1)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+      </button>
+    </div>
+    <button onClick="{{ goFinance }}" aria-label="Finance" style="position:relative;flex:1;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ navC.fin }};transition:color 200ms">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg><span style="font-size:10px;font-weight:700">Finance</span>
+    </button>
+    <button onClick="{{ goMore }}" aria-label="More" style="position:relative;flex:1;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:{{ navC.more }};transition:color 200ms">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect></svg><span style="font-size:10px;font-weight:700">More</span>
+    </button>
+  </div>
+  </sc-if>
+
+  <div style="position:absolute;left:24px;right:24px;top:62px;z-index:50;display:flex;justify-content:center;pointer-events:none;opacity:{{ toastOp }};transform:translateY({{ toastY }});transition:opacity 220ms, transform 260ms cubic-bezier(.2,.8,.2,1)">
+    <span style="padding:12px 18px;border-radius:18px;background:#111830;color:#fff;font-size:14px;font-weight:600;box-shadow:0 12px 30px -12px rgba(0,0,0,.5)">{{ toast }}</span>
+  </div>
+
+  <div style="position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:{{ homeInd }};z-index:60;pointer-events:none"></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Accessibility&quot;},&quot;navTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;ink&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light'|'ink'&quot;,&quot;section&quot;:&quot;Navigation&quot;}}">
+const IMG = id => `https://images.unsplash.com/${id}?q=80&w=800&auto=format&fit=crop`;
+const PROPS = [
+  { id:'p1', name:'Green Villa', location:'DHA Phase 6, Lahore', address:'416 Oak Street, Sector J · DHA Phase 6', type:'House', status:'Occupied', value:48.5e6, purchase:38e6, year:2021, rent:120000, exp:28000, net:92000, yld:8.3, img:IMG('photo-1600585154340-be6161a56a0c'),
+    tenant:'Jane Doe', initials:'JD', lease:'Lease · Jan 2026 – Dec 2026', leasePct:'75%', leaseLeft:'3 months left', rentStatus:'Paid', rentKind:'ok',
+    insight:'Maintenance costs rose 14% last quarter, mostly garden and pool upkeep. Rent has been paid on time for 9 months.',
+    maint:[{title:'Pool pump service',meta:'Scheduled · 04 Oct',cost:'Rs12K',k:'up'},{title:'Garden irrigation repair',meta:'Completed · 18 Sep',cost:'Rs8.5K',k:'done'}] },
+  { id:'p2', name:'LuxeApart Residencies', location:'Gulberg III, Lahore', address:'Tower B, Suite 804 · Main Boulevard', type:'Apartment', status:'Occupied', value:32e6, purchase:25e6, year:2022, rent:185000, exp:42500, net:142500, yld:7.6, img:IMG('photo-1545324418-cc1a3fa10c00'),
+    tenant:'Ahmed Khan + 3 units', initials:'AK', lease:'4 leases · next renewal Mar 2027', leasePct:'40%', leaseLeft:'Unit 3 · Rs46K due', rentStatus:'Overdue', rentKind:'bad',
+    insight:'Unit 3 is 3 days overdue on Rs46K. The other three units have paid on time for 9 consecutive months.',
+    maint:[{title:'Lift annual inspection',meta:'In progress · since 26 Sep',cost:'Rs18K',k:'up'},{title:'Unit 2 water heater',meta:'Completed · 02 Sep',cost:'Rs14K',k:'done'}] },
+  { id:'p3', name:'Downtown Commercial Plaza', location:'Blue Area, Islamabad', address:'Floor 3, Tech Hub Plaza · Jinnah Ave', type:'Commercial', status:'5 of 6 let', value:28e6, purchase:22e6, year:2020, rent:240000, exp:65000, net:175000, yld:9.1, img:IMG('photo-1486406146926-c627a92ad1ab'),
+    tenant:'TechVentures Corp', initials:'TV', lease:'Lease · Aug 2024 – Jul 2027', leasePct:'36%', leaseLeft:'22 months left', rentStatus:'Paid', rentKind:'ok',
+    insight:'Highest yield in your portfolio at 9.1%. One of six units is vacant — letting it would add about Rs40K a month.',
+    maint:[{title:'HVAC compressor service',meta:'High priority · opened 27 Sep',cost:'Rs52K',k:'bad'},{title:'Lobby lighting',meta:'Completed · 11 Sep',cost:'Rs9K',k:'done'}] },
+  { id:'p4', name:'Model Town Residence', location:'Model Town Block C, Lahore', address:'18 Garden Way · Model Town', type:'House', status:'Vacant', value:16.3e6, purchase:13.5e6, year:2023, rent:95000, exp:18000, net:77000, yld:6.9, img:IMG('photo-1580587771525-78b9dba3b914'),
+    tenant:null, insight:'Vacant for 12 days. At its last rent of Rs95K, each empty month lowers annual portfolio income by about 0.9%.',
+    maint:[{title:'Repaint before listing',meta:'Scheduled · 06 Oct',cost:'Rs35K',k:'up'},{title:'Deep clean',meta:'Completed · 20 Sep',cost:'Rs6K',k:'done'}] },
+];
+const HOME_SERIES = [104.2,105.1,106.8,107.4,109.9,111.2,112.6,115.0,117.3,119.8,122.1,124.8];
+const FIN = {
+  '1M': { labels:['W1','W2','W3','W4'], inc:[205,212,208,220], exp:[48,61,52,57], full:['Week 1','Week 2','Week 3','Week 4'] },
+  '6M': { labels:['Apr','May','Jun','Jul','Aug','Sep'], inc:[742,768,801,790,822,845], exp:[196,204,188,221,209,218] },
+  '1Y': { labels:['O','N','D','J','F','M','A','M','J','J','A','S'], inc:[688,695,702,710,725,731,742,768,801,790,822,845], exp:[182,210,190,175,201,188,196,204,188,221,209,218], full:['Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'] },
+  'ALL': { labels:['2021','2022','2023','2024','2025','2026'], inc:[3120,5480,7260,8140,8930,7154], exp:[890,1420,1860,2110,2380,1855] },
+};
+const IC = {
+  alert:'M12 8v5M12 16.5v.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+  cal:'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
+  wrench:'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z',
+  shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',
+  file:'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6',
+  home:'M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z',
+  up:'M22 7l-8.5 8.5-5-5L2 17M16 7h6v6',
+  down:'M22 17l-8.5-8.5-5 5L2 7M16 17h6v-6',
+  chart:'M3 3v18h18M7 16v-5M12 16V8M17 16v-8',
+  compare:'M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7',
+  bell:'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0',
+  lock:'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+  coin:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM15 9a3 3 0 0 0-3-1.5c-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2a3 3 0 0 1-3-1.5M12 6v12',
+  help:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01',
+};
+const ANSWERS = {
+  'What are my highest expense properties?':'Downtown Commercial Plaza has the highest monthly costs at Rs65K, then LuxeApart Residencies at Rs42.5K. Together they make up 70% of recorded property expenses.',
+  'How much rent did I collect this month?':'You collected Rs799K of Rs845K due in September — a 94.6% collection rate. Rs46K is outstanding from LuxeApart Unit 3.',
+  'Which property generated the most net income?':'Downtown Commercial Plaza, at Rs175K net per month. LuxeApart Residencies follows with Rs142.5K.',
+  'Show my maintenance costs.':'Maintenance totals Rs98K this month — 45% of expenses. The HVAC service at Downtown Commercial Plaza accounts for Rs52K of it.',
+};
+const fM = v => 'Rs' + (v/1e6).toFixed(1) + 'M';
+const fK = v => 'Rs' + (v%1000===0 ? v/1000 : (v/1000).toFixed(1)) + 'K';
+const fKK = k => k >= 1000 ? 'Rs' + (k/1000).toFixed(2) + 'M' : 'Rs' + k + 'K';
+const TONE = { ok:['#1B8A55','#E3F5EC'], bad:['#D23B40','#FCE7E8'], warn:['#B7741A','#FDF1DC'], info:['#304BC7','#E7EBFF'] };
+
+const F_ = (k,label,kind,x={}) => ({k,label,kind,...x});
+const REMIND = F_('remind','Remind me','remind');
+const FORMS = {
+  property:{ title:'Add property', icon:'home', steps:[
+    { t:'What are you adding?', f:[F_('type','Property type','seg',{opts:['House','Apartment','Commercial','Land','Other'],def:'House'}), F_('name','Property name','text',{ph:'e.g. Oak Apartment',def:'Oak Apartment'}), F_('status','Current status','seg',{opts:['Owner occupied','Rented','Vacant','Under maintenance'],def:'Rented'})]},
+    { t:'Where is it?', f:[F_('map','Location','map'), F_('address','Address','text',{def:'12 Canal View Road'}), F_('city','City','text',{def:'Lahore'}), F_('country','Country','text',{def:'Pakistan'}), F_('postal','Postal code','text',{def:'54000'})]},
+    { t:'Tell us about the space', f:[F_('beds','Bedrooms','seg',{opts:['1','2','3','4','5+'],def:'3'}), F_('baths','Bathrooms','seg',{opts:['1','2','3','4+'],def:'2'}), F_('area','Area (sq ft)','text',{def:'1,850'}), F_('year','Year built','text',{def:'2018'}), F_('furn','Furnishing','seg',{opts:['Furnished','Unfurnished'],def:'Unfurnished'})]},
+    { t:'The numbers', f:[F_('purchase','Purchase price','money',{def:'18,500,000'}), F_('value','Current value','money',{def:'21,000,000'}), F_('loan','Mortgage / loan (optional)','money',{def:''}), F_('exp','Monthly expenses','money',{def:'15,000'})]},
+    { t:'Add photos', f:[F_('photos','Property photos','upload',{multi:true})]},
+    { t:'Review', review:true },
+  ]},
+  lease:{ title:'Add rental / lease', icon:'cal', steps:[
+    { t:'Who is renting?', f:[F_('prop','Property','prop'), F_('tenant','Tenant name','text',{def:'Hira Qureshi'}), F_('phone','Phone','text',{def:'+92 300 555 0142'}), F_('email','Email','text',{def:'hira.q@mail.com'})]},
+    { t:'Lease terms', f:[F_('rent','Monthly rent','money',{def:'110,000'}), F_('deposit','Security deposit','money',{def:'220,000'}), F_('start','Lease start','date',{def:'2026-10-12'}), F_('end','Lease end','date',{def:'2027-10-11'}), F_('due','Rent due','seg',{opts:['1st','5th','10th','15th'],def:'1st'}), F_('freq','Payment frequency','seg',{opts:['Monthly','Quarterly','Yearly','Custom'],def:'Monthly'}), F_('pstatus','First payment','seg',{opts:['Paid','Pending','Overdue'],def:'Pending'}), F_('grace','Late grace period','seg',{opts:['None','3 days','5 days','7 days'],def:'3 days'})]},
+    { t:'Rent reminders', f:[REMIND, F_('notes','Notes','note',{ph:'Anything to remember about this lease'})]},
+    { t:'Review', review:true },
+  ]},
+  income:{ title:'Add income', icon:'up', steps:[{ t:'Record income', f:[F_('itype','Income type','seg',{opts:['Rent','Deposit','Parking','Utilities','Other'],def:'Rent'}), F_('prop','Property','prop'), F_('amount','Amount','money',{def:'46,000'}), F_('date','Date','date',{def:'2026-09-29'}), F_('method','Payment method','seg',{opts:['Cash','Bank','Card','Other'],def:'Bank'}), F_('receipt','Receipt (optional)','upload'), F_('notes','Notes','note',{ph:'Optional'})]}]},
+  expense:{ title:'Add expense', icon:'down', steps:[{ t:'Record expense', f:[F_('prop','Property','prop'), F_('cat','Category','chips',{opts:['Maintenance','Utilities','Insurance','Tax','Management','Renovation','Mortgage','Repairs','Other'],def:'Utilities'}), F_('amount','Amount','money',{def:'28,500'}), F_('date','Date','date',{def:'2026-09-29'}), F_('method','Payment method','seg',{opts:['Cash','Bank','Card','Other'],def:'Bank'}), F_('recur','Repeats','seg',{opts:['Once','Monthly','Quarterly','Yearly'],def:'Once'}), F_('receipt','Receipt / invoice','upload'), F_('notes','Notes','note',{ph:'Optional'})]}]},
+  tenant:{ title:'Add tenant', icon:'users', steps:[
+    { t:'Tenant', f:[F_('photo','Photo (optional)','upload'), F_('tenant','Full name','text',{def:'Hira Qureshi'}), F_('phone','Phone','text',{def:'+92 300 555 0142'}), F_('email','Email','text',{def:'hira.q@mail.com'}), F_('emerg','Emergency contact (optional)','text',{def:''})]},
+    { t:'Tenancy', f:[F_('prop','Property','prop'), F_('rent','Monthly rent','money',{def:'95,000'}), F_('deposit','Security deposit','money',{def:'190,000'}), F_('start','Lease start','date',{def:'2026-10-12'}), F_('end','Lease end','date',{def:'2027-10-11'}), F_('due','Rent due','seg',{opts:['1st','5th','10th','15th'],def:'1st'}), REMIND]},
+  ]},
+  maintenance:{ title:'Add maintenance', icon:'wrench', steps:[{ t:'Log an issue', f:[F_('prop','Property','prop'), F_('title','Issue','text',{def:'AC service'}), F_('cat','Category','chips',{opts:['Plumbing','Electrical','HVAC','Appliance','Structural','Cleaning','Other'],def:'HVAC'}), F_('prio','Priority','seg',{opts:['Low','Medium','High','Urgent'],def:'Medium'}), F_('date','Scheduled for','date',{def:'2026-10-04'}), F_('est','Estimated cost','money',{def:'12,000'}), F_('actual','Actual cost','money',{def:''}), F_('mstatus','Status','seg',{opts:['Open','In progress','Completed'],def:'Open'}), F_('photo','Photo / receipt','upload'), F_('mrem','Remind me before','toggle',{def:true})]}]},
+  document:{ title:'Add document', icon:'file', steps:[{ t:'Add to vault', f:[F_('dtype','Type','chips',{opts:['Lease','Ownership','Insurance','Tax','Receipt','Invoice','Maintenance','Other'],def:'Insurance'}), F_('prop','Property','prop'), F_('name','Document name','text',{def:'Building insurance 2026'}), F_('file','File or photo','upload'), F_('ddate','Document date','date',{def:'2025-10-29'}), F_('expiry','Expiry date (optional)','date',{def:'2026-10-29'}), F_('notes','Notes','note',{ph:'Optional'})]}]},
+  reminder:{ title:'Add reminder', icon:'bell', steps:[{ t:'New reminder', f:[F_('title','Title','text',{def:'Annual inspection'}), F_('prop','Related property','prop'), F_('rtype','Type','chips',{opts:['Rent','Lease','Maintenance','Insurance','Document','Inspection','Tax','Custom'],def:'Inspection'}), F_('date','Date','date',{def:'2026-10-02'}), F_('time','Time','time',{def:'10:00'}), F_('repeat','Repeat','seg',{opts:['None','Daily','Weekly','Monthly','Yearly'],def:'Yearly'}), F_('notify','Notify me','toggle',{def:true}), F_('notes','Notes','note',{ph:'Optional'})]}]},
+};
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fDate = iso => { if (!iso) return '—'; const [y,m,d] = iso.split('-').map(Number); return `${d} ${MONTHS[m-1]} ${y}`; };
+const num = v => Number(String(v||'0').replace(/[^0-9.]/g,'')) || 0;
+
+class Component extends DCLogic {
+  state = { screen:'home', back:'home', sel:0, car:0, filter:'All', query:'', range:'6M', finSel:5, perf:'value', qa:false, toast:'', toastOn:false, heroV:124.8, finV:627, chat:[], typed:'' };
+  chatRef = React.createRef();
+  constructor(p){ super(p); Object.assign(this.state, {
+    form:null, step:0, fv:{}, overduePaid:false, incAdj:0, expAdj:0, notifCat:'All', remSel:0, remTiming:{'1d':true,'3d':true,'7d':false,'due':true},
+    nset:{ push:true, rent:true, lease:true, maint:true, docs:true, ins:true, pay:true, fin:false, quiet:true },
+    reminders:[
+      { id:'r1', title:'Rent due', prop:'Green Villa', amount:'Rs120,000', date:'1 Oct 2026', time:'09:00', type:'Rent', repeat:'Monthly', src:'Auto · from Jane Doe\u2019s lease', notes:'Jane usually pays by bank transfer.', done:false, on:true },
+      { id:'r2', title:'Lease expires', prop:'Green Villa', amount:'', date:'31 Dec 2026', time:'09:00', type:'Lease', repeat:'None', src:'Auto · 30 days before lease end', notes:'Discuss renewal terms in November.', done:false, on:true },
+      { id:'r3', title:'HVAC compressor service', prop:'Downtown Commercial Plaza', amount:'Est. Rs52K', date:'30 Sep 2026', time:'11:00', type:'Maintenance', repeat:'None', src:'Auto · from maintenance ticket', notes:'Technician: CoolAir Services.', done:false, on:true },
+      { id:'r4', title:'Insurance renewal', prop:'LuxeApart Residencies', amount:'', date:'13 Oct 2026', time:'10:00', type:'Insurance', repeat:'Yearly', src:'Auto · from policy expiry date', notes:'', done:false, on:true },
+    ],
+    notifs:[
+      { id:'n1', cat:'Rent', title:'Rent overdue', sub:'LuxeApart Unit 3 · Ahmed Khan · Rs46,000', time:'2h', unread:true, to:'overdue' },
+      { id:'n2', cat:'Rent', title:'Rent due in 2 days', sub:'Green Villa · Rs120,000', time:'8h', unread:true, to:'rem:0' },
+      { id:'n3', cat:'Maintenance', title:'Maintenance scheduled tomorrow', sub:'HVAC compressor · Downtown Plaza', time:'1d', unread:true, to:'rem:2' },
+      { id:'n4', cat:'Documents', title:'Insurance expires in 14 days', sub:'LuxeApart Residencies', time:'1d', unread:false, to:'rem:3' },
+      { id:'n5', cat:'Finance', title:'Expense added', sub:'Rs31,000 · Electricity · LuxeApart', time:'3d', unread:false, to:'finance' },
+      { id:'n6', cat:'Lease', title:'Lease expires in 90 days', sub:'Green Villa · Jane Doe', time:'4d', unread:false, to:'rem:1' },
+    ],
+  }); }
+  openForm(key, pre={}){
+    const fv = {}; FORMS[key].steps.forEach(st => (st.f||[]).forEach(f => { if (f.def !== undefined) fv[f.k] = f.def; }));
+    fv.prop = fv.prop ?? 0; Object.assign(fv, pre);
+    this.setState(s => ({ form:key, step:0, fv, back: s.screen==='form' ? s.back : s.screen })); this.go('form');
+  }
+  setF(k, v){ this.setState(s => ({ fv:{ ...s.fv, [k]:v } })); }
+  notify(n){ this.setState(s => ({ notifs:[{ id:'n'+Date.now(), time:'now', unread:true, ...n }, ...s.notifs] })); }
+  addRem(r){ let idx = 0; this.setState(s => { idx = s.reminders.length; return { reminders:[...s.reminders, { id:'r'+Date.now(), done:false, on:true, time:'09:00', notes:'', amount:'', ...r }] }; }); return () => idx; }
+  bookIncome(k){ ['1M','6M','1Y','ALL'].forEach(r => FIN[r].inc[FIN[r].inc.length-1] += k); this.setState(s => ({ incAdj: s.incAdj + k })); }
+  bookExpense(k){ ['1M','6M','1Y','ALL'].forEach(r => FIN[r].exp[FIN[r].exp.length-1] += k); this.setState(s => ({ expAdj: s.expAdj + k })); }
+  markPaid(){
+    const p = PROPS[1]; p.rentKind = 'ok'; p.rentStatus = 'Paid'; p.leaseLeft = 'All units paid';
+    this.bookIncome(46); this.setState({ overduePaid:true });
+    this.notify({ cat:'Rent', title:'Payment recorded', sub:'LuxeApart Unit 3 · Rs46,000 · Bank transfer', to:'finance', unread:false });
+  }
+  leaseFromForm(v, p){
+    const rent = num(v.rent);
+    Object.assign(p, { status:'Occupied', tenant:v.tenant, initials:(v.tenant||'T').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
+      lease:`Lease · ${fDate(v.start)} – ${fDate(v.end)}`, leasePct:'2%', leaseLeft:`Rent due ${v.due} of every month`, rentStatus:v.pstatus||'Pending', rentKind: v.pstatus==='Overdue' ? 'bad' : v.pstatus==='Paid' ? 'ok' : 'warn',
+      rent: rent || p.rent, net:(rent || p.rent) - p.exp, leaseStart:v.start, leaseEnd:v.end, due:v.due, isNew:true });
+    p.yld = p.value ? +((p.net*12)/p.value*100).toFixed(1) : 0;
+    const timing = Object.entries(this.state.remTiming).filter(([,on])=>on).map(([k])=>({ '1d':'1 day before','3d':'3 days before','7d':'7 days before','due':'on the due date' }[k])).join(', ');
+    this.addRem({ title:'Rent due', prop:p.name, amount:'Rs'+(rent||p.rent).toLocaleString(), date:`${parseInt(v.due)} Nov 2026`, type:'Rent', repeat:v.freq||'Monthly', src:`Auto · from ${v.tenant}\u2019s lease · ${timing || 'no alerts'}` });
+    this.addRem({ title:'Lease expires', prop:p.name, date:fDate(v.end), type:'Lease', repeat:'None', src:'Auto · 30 days before lease end' });
+    this.notify({ cat:'Lease', title:'Rent reminders scheduled', sub:`${p.name} · ${v.tenant} · due ${v.due} monthly`, to:'rem:'+this.state.reminders.length, unread:true });
+  }
+  saveForm(){
+    const { form, fv:v } = this.state; const P = PROPS[v.prop] || PROPS[0]; const pi = PROPS.indexOf(P);
+    if (form==='property'){
+      const np = { id:'p'+Date.now(), name:v.name||'New property', location:`${v.city}, ${v.country}`, address:`${v.address} · ${v.city} ${v.postal}`, type:['House','Apartment','Commercial'].includes(v.type)?v.type:'House',
+        status: v.status==='Rented' ? 'Occupied' : v.status==='Under maintenance' ? 'Maintenance' : v.status==='Owner occupied' ? 'Owned' : 'Vacant',
+        value:num(v.value)||20e6, purchase:num(v.purchase)||18e6, year:num(v.year)||2020, rent:0, exp:num(v.exp), net:-num(v.exp), yld:0, img:IMG('photo-1600596542815-ffad4c1539a9'), tenant:null,
+        insight:'New to your portfolio. Insights appear once a month of income and expenses is recorded.',
+        maint:[{title:'Property added',meta:'Today',cost:'',k:'done'}] };
+      PROPS.push(np);
+      this.notify({ cat:'Property', title:'Property added', sub:`${np.name} · ${fM(np.value)}`, to:'detail:'+(PROPS.length-1), unread:false });
+      if (v.status==='Rented'){ this.showToast(`${np.name} added · now add its lease`); return this.openForm('lease', { prop:PROPS.length-1, rent:'110,000' }); }
+      this.showToast(`${np.name} added to your portfolio`); return this.go('detail', { sel:PROPS.length-1, perf:'value' });
+    }
+    if (form==='lease' || form==='tenant'){ this.leaseFromForm(v, P); this.showToast('Lease saved · rent reminders scheduled'); return this.go('detail', { sel:pi, perf:'value' }); }
+    if (form==='income'){ const k = Math.round(num(v.amount)/1000); this.bookIncome(k); this.notify({ cat:'Finance', title:'Income recorded', sub:`Rs${num(v.amount).toLocaleString()} · ${v.itype} · ${P.name}`, to:'finance', unread:false }); this.showToast(`+Rs${k}K added · cash flow updated`); return this.go('finance'); }
+    if (form==='expense'){ const k = Math.round(num(v.amount)/1000); this.bookExpense(k); this.notify({ cat:'Finance', title:'Expense added', sub:`Rs${num(v.amount).toLocaleString()} · ${v.cat} · ${P.name}`, to:'finance', unread:false }); this.showToast(`−Rs${k}K recorded · cash flow updated`); return this.go('finance'); }
+    if (form==='maintenance'){ P.maint = [{ title:v.title, meta:`${v.mstatus} · ${fDate(v.date)} · ${v.prio}`, cost:v.est ? 'Rs'+Math.round(num(v.est)/1000)+'K' : '', k: v.prio==='Urgent'||v.prio==='High' ? 'bad' : 'up' }, ...P.maint];
+      if (v.mrem) this.addRem({ title:v.title, prop:P.name, amount:v.est ? 'Est. Rs'+v.est : '', date:fDate(v.date), type:'Maintenance', repeat:'None', src:'Auto · 1 day before scheduled visit' });
+      this.showToast(v.mrem ? 'Logged · reminder set for the day before' : 'Maintenance logged'); return this.go('detail', { sel:pi, perf:'expenses' }); }
+    if (form==='document'){ if (v.expiry) this.addRem({ title:`${v.dtype} expires`, prop:P.name, date:fDate(v.expiry), type:v.dtype, repeat:'None', src:'Auto · 30 days before expiry' });
+      this.notify({ cat:'Documents', title:'Document added', sub:`${v.name} · ${P.name}`, to:'detail:'+pi, unread:false });
+      this.showToast(v.expiry ? 'Saved · expiry reminder created' : 'Saved to vault'); return this.go('detail', { sel:pi, perf:'value' }); }
+    if (form==='reminder'){ this.addRem({ title:v.title, prop:P.name, date:fDate(v.date), time:v.time, type:v.rtype, repeat:v.repeat, src:'Added by you', notes:v.notes, on:!!v.notify });
+      this.showToast('Reminder saved'); return this.setState(s => ({ remSel:s.reminders.length-1 }), () => this.go('reminder')); }
+  }
+  openNotif(n){
+    this.setState(s => ({ notifs:s.notifs.map(x => x.id===n.id ? { ...x, unread:false } : x) }));
+    const [a,b] = String(n.to).split(':');
+    if (a==='rem') return this.setState({ remSel:+b }, () => this.go('reminder'));
+    if (a==='detail') return this.go('detail', { sel:+b, perf:'value' });
+    this.go(a);
+  }
+
+  componentDidMount(){ this.count('heroV', 124.8); }
+  get rm(){ return !!this.props.reduceMotion; }
+  count(key, to){
+    if (this.rm) return this.setState({[key]:to});
+    cancelAnimationFrame(this._raf); const t0 = performance.now(), d = 900;
+    const step = t => { const p = Math.min(1,(t-t0)/d), e = 1-Math.pow(1-p,3); this.setState({[key]: to*e}); if (p<1) this._raf = requestAnimationFrame(step); };
+    this._raf = requestAnimationFrame(step);
+  }
+  go(screen, extra={}){
+    const tab = ['home','portfolio','finance','more','welcome'].includes(screen);
+    this.setState(s => ({ screen, qa:false, hist: tab ? [] : (s.screen===screen ? (s.hist||[]) : (s.screen==='form' ? (s.hist||[]) : [...(s.hist||[]), s.screen])), ...extra }));
+    if (screen==='home') this.count('heroV',124.8);
+    if (screen==='finance') this.count('finV',627+this.state.incAdj-this.state.expAdj);
+  }
+  showToast(msg){ clearTimeout(this._tt); this.setState({toast:msg, toastOn:true, qa:false}); this._tt = setTimeout(()=>this.setState({toastOn:false}), 1900); }
+  ask(q){
+    if (!q.trim()) return;
+    const a = ANSWERS[q] || 'I can answer questions about rent, expenses, leases, maintenance and property value from your recorded data. Try one of the suggestions below.';
+    this.setState(s => ({ chat:[...s.chat, {q:true,text:q}], typed:'' }));
+    setTimeout(()=>{ this.setState(s => ({ chat:[...s.chat, {q:false,text:a}] })); this.scrollChat(); }, this.rm ? 0 : 450);
+    this.scrollChat();
+  }
+  scrollChat(){ setTimeout(()=>{ const el = this.chatRef.current; if (el) el.scrollTop = el.scrollHeight; }, 30); }
+  smooth(pts){ let d = `M${pts[0][0]} ${pts[0][1]}`; for (let i=1;i<pts.length;i++){ const [x0,y0]=pts[i-1],[x1,y1]=pts[i],dx=(x1-x0)/2; d += ` C${x0+dx} ${y0} ${x1-dx} ${y1} ${x1} ${y1}`; } return d; }
+  card(p, i){
+    const vacant = p.status==='Vacant';
+    return { ...p, value:fM(p.value), rent:fK(p.rent), exp:fK(p.exp), net:fK(p.net), yield: p.yld ? p.yld+'%' : '—', typeLabel:p.type,
+      statusColor: vacant ? '#B7741A' : '#1B8A55', open:()=>this.go('detail',{sel:PROPS.indexOf(p), perf:'value'}) };
+  }
+
+  toggleEl(on){ return { tBg: on ? '#4D6DFA' : '#DDE3F3', tX: on ? '20px' : '0px' }; }
+  extraVals(s, rm){
+    const scr = s.screen, v = s.fv, F = s.form && FORMS[s.form];
+    const st = F ? F.steps[s.step] : null, last = F ? s.step===F.steps.length-1 : false;
+    const segOpt = (f, o) => { const on = f.kind==='chips' || f.kind==='seg' ? v[f.k]===o : false; return { label:o, bg: on ? '#111830' : '#fff', fg: on ? '#fff' : '#4A5170', bd: on ? '#111830' : '#DDE3F3', pick:()=>this.setF(f.k,o) }; };
+    const TIM = [['1d','1 day before'],['3d','3 days before'],['7d','7 days before'],['due','On due date']];
+    const fields = (st && st.f || []).map(f => ({ label:f.label, ph:f.ph||'', val: v[f.k] ?? '',
+      isText:f.kind==='text', isMoney:f.kind==='money', isSeg:f.kind==='seg', isChips:f.kind==='chips', isProp:f.kind==='prop', isDate:f.kind==='date', isTime:f.kind==='time', isToggle:f.kind==='toggle', isUpload:f.kind==='upload', isNote:f.kind==='note', isMap:f.kind==='map', isRemind:f.kind==='remind',
+      onInput: e => this.setF(f.k, e.target.value), opts:(f.opts||[]).map(o=>segOpt(f,o)),
+      props: PROPS.map((p,i)=>({ name:p.name, img:p.img, bd: v.prop===i ? '#4D6DFA' : 'transparent', op: v.prop===i ? 1 : .7, pick:()=>this.setF('prop',i) })),
+      ...this.toggleEl(!!v[f.k]), toggle:()=>this.setF(f.k, !v[f.k]),
+      uploads: v[f.k+'_n'] || 0, hasUploads: (v[f.k+'_n']||0) > 0, upLabel: (v[f.k+'_n']||0) ? `${v[f.k+'_n']} photo${v[f.k+'_n']>1?'s':''} added · tap to add more` : (f.multi ? 'Tap to add photos' : 'Tap to attach a file or photo'), upload:()=>this.setF(f.k+'_n', (v[f.k+'_n']||0)+1),
+      thumbs: Array.from({length:Math.min(v[f.k+'_n']||0,4)},(_,i)=>({ img:[IMG('photo-1600596542815-ffad4c1539a9'),IMG('photo-1600607687939-ce8a6c25118c'),IMG('photo-1512917774080-9991f1c4c750'),IMG('photo-1513694203232-719a280e022f')][i] })),
+      timing: TIM.map(([k,l])=>({ label:l, bg: s.remTiming[k] ? '#E7EBFF' : '#fff', fg: s.remTiming[k] ? '#304BC7' : '#6B7186', bd: s.remTiming[k] ? '#9EAEFF' : '#DDE3F3', check: s.remTiming[k] ? '1' : '0', pick:()=>this.setState(x=>({ remTiming:{ ...x.remTiming, [k]:!x.remTiming[k] } })) })),
+    }));
+    const P = PROPS[v.prop] || PROPS[0];
+    const isLease = s.form==='lease' || s.form==='tenant';
+    const review = s.form==='property' ? [
+      ['Type', v.type], ['Status', v.status], ['Address', `${v.address}, ${v.city}`], ['Country', `${v.country} ${v.postal}`], ['Layout', `${v.beds} bed · ${v.baths} bath · ${v.area} sq ft`], ['Built / furnishing', `${v.year} · ${v.furn}`], ['Purchase price', 'Rs'+v.purchase], ['Current value', 'Rs'+v.value], ['Loan', v.loan ? 'Rs'+v.loan : 'None'], ['Monthly expenses', 'Rs'+v.exp], ['Photos', `${v.photos_n||0} added`],
+    ] : [ ['Property', P.name], ['Tenant', v.tenant], ['Contact', `${v.phone} · ${v.email}`], ['Monthly rent', 'Rs'+v.rent], ['Security deposit', 'Rs'+v.deposit], ['Frequency', v.freq], ['First payment', v.pstatus], ['Grace period', v.grace] ];
+    const cats = ['All','Rent','Lease','Maintenance','Documents','Finance','Property'];
+    const CI = { Rent:['coin','#1B8A55','#E3F5EC'], Lease:['cal','#304BC7','#E7EBFF'], Maintenance:['wrench','#B7741A','#FDF1DC'], Documents:['file','#304BC7','#E7EBFF'], Finance:['chart','#4A5170','#EEF1F8'], Property:['home','#304BC7','#E7EBFF'] };
+    const nl = s.notifs.filter(n => s.notifCat==='All' || n.cat===s.notifCat).map(n => { const c = n.title==='Rent overdue' && !s.overduePaid ? ['alert','#D23B40','#FCE7E8'] : (CI[n.cat]||CI.Property);
+      return { ...n, icon:IC[c[0]], color:c[1], tint:c[2], dot: n.unread ? '#4D6DFA' : 'transparent', weight: n.unread ? 700 : 500, bg: n.unread ? '#fff' : 'rgba(255,255,255,.55)', open:()=>this.openNotif(n) }; });
+    const R = s.reminders[s.remSel] || s.reminders[0];
+    const NS = [['push','Push notifications','Master switch for all alerts'],['rent','Rent reminders','Before and on each due date'],['pay','Payment updates','When rent is paid or becomes overdue'],['lease','Lease reminders','Renewals and expirations'],['maint','Maintenance','Scheduled visits and urgent issues'],['docs','Document expiry','Files with an expiry date'],['ins','Insurance','Policy renewals'],['fin','Monthly summary','Income, costs and cash flow on the 1st'],['quiet','Quiet hours','Hold alerts 22:00 – 07:00']];
+    const inc = 845 + s.incAdj, exp = 218 + s.expAdj;
+    return {
+      isForm: scr==='form', isNotifs: scr==='notifs', isNSet: scr==='nsettings', isReminder: scr==='reminder', isOverdue: scr==='overdue',
+      month:{ inc:'Rs'+inc+'K', exp:'Rs'+exp+'K', net:'Rs'+(inc-exp)+'K', fi:inc-exp, fe:exp },
+      fTitle: F ? F.title : '', fStep: st ? st.t : '', fCount: F && F.steps.length>1 ? `Step ${s.step+1} of ${F.steps.length}` : 'Quick entry', fFields: fields,
+      fBars: F ? F.steps.map((_,i)=>({ bg: i<=s.step ? '#4D6DFA' : '#DDE3F3' })) : [], fMulti: F ? F.steps.length>1 : false,
+      fReview: !!(st && st.review), fIsPropReview: s.form==='property', fIsLeaseReview: isLease, fRows: review.map(([k,val])=>({k,val})),
+      fName: v.name, fLoc: `${v.address}, ${v.city}`, fValue: 'Rs'+(v.value||''), fPhotoN: v.photos_n||0,
+      lease:{ start:fDate(v.start), end:fDate(v.end), due:`${v.due||'1st'} of every month`, rent:'Rs'+(v.rent||''), prop:P.name, tenant:v.tenant },
+      fNextLabel: last ? (s.form==='property' ? 'Save property' : isLease ? 'Save lease' : 'Save') : 'Continue', fHasPrev: s.step>0,
+      fNext:()=> last ? this.saveForm() : this.setState({ step:s.step+1 }), fPrev:()=>this.setState({ step:Math.max(0,s.step-1) }),
+      fHint: s.form==='lease' || s.form==='tenant' ? 'Saving creates rent reminders automatically.' : s.form==='document' ? 'An expiry date creates a reminder 30 days before.' : s.form==='income' || s.form==='expense' ? 'Cash flow and charts update when you save.' : '',
+      notifChips: cats.map(c=>({ label:c, bg: s.notifCat===c ? '#111830' : '#fff', fg: s.notifCat===c ? '#fff' : '#4A5170', pick:()=>this.setState({ notifCat:c }) })),
+      notifList: nl, noNotifs: nl.length===0, unreadN: s.notifs.filter(n=>n.unread).length, hasUnread: s.notifs.some(n=>n.unread),
+      markAllRead:()=>this.setState(x=>({ notifs:x.notifs.map(n=>({ ...n, unread:false })) })),
+      upcoming: s.reminders.map((r,i)=>({ ...r, i, open:()=>this.setState({ remSel:i }, ()=>this.go('reminder')), op: r.done ? .45 : 1, tag: r.done ? 'Done' : r.date })).filter(r=>!r.done).slice(0,5),
+      goNotifs:()=>this.go('notifs'), goNSet:()=>this.go('nsettings'),
+      nsList: NS.map(([k,l,sub])=>({ label:l, sub, ...this.toggleEl(s.nset[k]), toggle:()=>this.setState(x=>({ nset:{ ...x.nset, [k]:!x.nset[k] } })), border: k==='push' ? '0' : '1px solid #EEF1F8' })),
+      nsTiming: TIM.map(([k,l])=>({ label:l, bg: s.remTiming[k] ? '#E7EBFF' : '#fff', fg: s.remTiming[k] ? '#304BC7' : '#6B7186', bd: s.remTiming[k] ? '#9EAEFF' : '#DDE3F3', pick:()=>this.setState(x=>({ remTiming:{ ...x.remTiming, [k]:!x.remTiming[k] } })) })),
+      rem: { ...R, hasAmount: !!R.amount, hasNotes: !!R.notes, status: R.done ? 'Completed' : R.on ? 'Scheduled' : 'Muted', statusColor: R.done ? '#1B8A55' : R.on ? '#304BC7' : '#6B7186', ...this.toggleEl(R.on) },
+      remUpd:(patch, msg)=>()=>{ this.setState(x=>({ reminders:x.reminders.map((r,i)=> i===x.remSel ? { ...r, ...patch } : r) })); if (msg) this.showToast(msg); },
+      remComplete:()=>{ this.setState(x=>({ reminders:x.reminders.map((r,i)=> i===x.remSel ? { ...r, done:!r.done } : r) })); this.showToast(R.done ? 'Reminder reopened' : 'Marked complete'); },
+      remSnooze:()=>{ this.setState(x=>({ reminders:x.reminders.map((r,i)=> i===x.remSel ? { ...r, time: r.time==='09:00' ? '18:00' : '09:00', src: r.src.replace(/ · snoozed$/,'') + ' · snoozed' } : r) })); this.showToast('Snoozed · we\u2019ll remind you again later'); },
+      remToggle:()=>this.setState(x=>({ reminders:x.reminders.map((r,i)=> i===x.remSel ? { ...r, on:!r.on } : r) })),
+      remDelete:()=>{ this.setState(x=>({ reminders:x.reminders.filter((_,i)=>i!==x.remSel), remSel:0 })); this.showToast('Reminder deleted'); const h=[...(s.hist||[])]; this.setState({ screen:h.pop()||'notifs', hist:h }); },
+      remEdit:()=>this.openForm('reminder', { title:R.title, prop:Math.max(0, PROPS.findIndex(p=>p.name===R.prop)) }),
+      remOpenProp:()=>{ const i = PROPS.findIndex(p=>p.name===R.prop); if (i>=0) this.go('detail', { sel:i, perf:'value' }); },
+      overduePaid: s.overduePaid, overdueOpen: !s.overduePaid, goOverdue:()=>this.go('overdue'), markPaid:()=>this.markPaid(),
+      goFinanceFromPaid:()=>this.go('finance'),
+      telHref:'tel:+923005550199', smsHref:'sms:+923005550199&body=' + encodeURIComponent('Hi Ahmed, a reminder that September rent of Rs46,000 for Unit 3 was due on 26 Sep.'), mailHref:'mailto:ahmed.khan@mail.com?subject=' + encodeURIComponent('September rent — Unit 3'),
+    };
+  }
+  renderVals(){
+    const s = this.state, rm = this.rm, ink = this.props.navTone === 'ink';
+    const scr = s.screen;
+    const tr = rm ? 'none' : 'all 280ms cubic-bezier(.2,.8,.2,1)';
+
+    const n = HOME_SERIES.length, mn = Math.min(...HOME_SERIES), mx = Math.max(...HOME_SERIES);
+    const pts = HOME_SERIES.map((v,i)=>[8+i*(364/(n-1)), 150-(v-mn)/(mx-mn)*110]);
+    const homeLine = this.smooth(pts);
+
+    const q = s.query.toLowerCase();
+    const list = PROPS.filter(p => (s.filter==='All' || p.type===s.filter) && (!q || (p.name+p.location).toLowerCase().includes(q)));
+    const sorted = [...list].sort((a,b)=>b.yld-a.yld);
+    const featured = sorted[0] ? this.card(sorted[0]) : {};
+    if (sorted[0]) featured.ring = `${(sorted[0].yld/12)*150.8} 150.8`;
+
+    const P = PROPS[s.sel]; const dpc = this.card(P);
+    const tone = TONE[P.rentKind] || TONE.ok;
+    const gain = ((P.value-P.purchase)/P.purchase*100).toFixed(1)+'%';
+    const qL = ["Q4'24","Q1","Q2","Q3","Q4","Q1'26","Q2","Q3"];
+    const perfData = {
+      value: Array.from({length:8},(_,i)=>P.purchase+(P.value-P.purchase)*Math.pow((i+1)/8,1.3)),
+      rent: [.88,.9,.9,.93,.95,.97,1,1].map(k=>k*P.rent),
+      expenses: [.8,.85,.95,.9,1,1.05,1.1,1.14].map(k=>k*P.exp/1.14),
+    }[s.perf];
+    const pmax = Math.max(...perfData);
+    const perf = {
+      head: s.perf==='value' ? fM(P.value) : fK(Math.round(perfData[7]/500)*500),
+      sub: s.perf==='value' ? `Up ${gain} since ${P.year}` : s.perf==='rent' ? 'Monthly rent, last 8 quarters' : 'Monthly expenses, last 8 quarters',
+      bars: perfData.map((v,i)=>({ h: Math.max(8,(v/pmax)*100)+'%', l:qL[i], c: i===7 ? '#4D6DFA' : '#DCE3FF' })),
+    };
+    const late = P.rentKind==='bad';
+    const pay = n => Array.from({length:n},(_,i)=>({ c: i===n-1 && late ? '#E5484D' : (P.id==='p1' && i===5) ? '#F2A93B' : '#2FB673' }));
+    const timeline = !P.tenant ? [] : P.isNew ? [
+      { title:'Lease starts', meta:fDate(P.leaseStart)+' · '+P.tenant, color:'#4D6DFA', dots:[] },
+      { title:'First rent due', meta:`${parseInt(P.due)} Nov 2026 · Rs${P.rent.toLocaleString()} · reminder set`, color:'#9EAEFF', dots:[] },
+      { title:'Renewal window opens', meta:'60 days before end', color:'#C9D3FF', dots:[] },
+      { title:'Lease ends', meta:fDate(P.leaseEnd), color:'#111830', dots:[] },
+    ] : [
+      { title:'Lease started', meta:P.lease.replace('Lease · ','').split(' – ')[0] + ' · ' + P.tenant, color:'#4D6DFA', dots:[] },
+      { title:'Rent payments', meta: late ? '8 on time · September overdue' : P.id==='p1' ? '8 on time · 1 paid late (Jun)' : 'All paid on time', color:'#2FB673', dots:pay(9) },
+      { title: late ? 'Overdue · Unit 3' : 'Next rent due', meta: late ? 'Rs46,000 · due 26 Sep · 3 days late' : '1 Oct 2026 · reminder 3 days before', color: late ? '#E5484D' : '#9EAEFF', dots:[] },
+      { title:'Renewal window', meta: P.id==='p1' ? 'Nov 2026' : 'Opens 60 days before end', color:'#C9D3FF', dots:[] },
+      { title:'Lease ends', meta: P.lease.split(' – ')[1] || 'Mar 2027', color:'#111830', dots:[] },
+    ];
+    const dp = { ...dpc, timeline: timeline.map((t,i)=>({ ...t, hasDots:t.dots.length>0, line: i===timeline.length-1 ? 'transparent' : '#E4E8F4' })), hasTimeline: timeline.length>0, isLate: late && !s.overduePaid, goOverdue:()=>this.go('overdue'), address:P.address, gain, purchase:fM(P.purchase), hasTenant:!!P.tenant, vacant:!P.tenant,
+      rentColor:tone[0], rentTint:tone[1],
+      maint: P.maint.map((m,i)=>({ ...m, color: m.k==='done' ? '#2FB673' : m.k==='bad' ? '#E5484D' : '#4D6DFA', line: i===P.maint.length-1 ? 'transparent' : '#E4E8F4' })) };
+
+    const F = FIN[s.range], fmax = Math.max(...F.inc), sel = Math.min(s.finSel, F.inc.length-1);
+    const bw = F.inc.length > 8 ? '9px' : F.inc.length > 5 ? '14px' : '20px';
+    const finBars = F.inc.map((v,i)=>({ label:F.labels[i], hi:(v/fmax*100)+'%', he:(F.exp[i]/fmax*100)+'%', w:bw, op: i===sel ? 1 : .38, lc: i===sel ? '#111830' : '#9AA0B4', pick:()=>this.setState({finSel:i}) }));
+    const sumI = F.inc.reduce((a,b)=>a+b,0), sumE = F.exp.reduce((a,b)=>a+b,0);
+    const rangeKeys = ['1M','6M','1Y','ALL'], ri = rangeKeys.indexOf(s.range);
+
+    const navIdx = { home:0, portfolio:1, finance:3, more:4 }[scr];
+    const slotW = 350/5;
+    const navX = ((navIdx ?? 0) * slotW + (slotW-58)/2 - 0) + 'px';
+    const nav = ink ? { bg:'#111830', ring:'rgba(255,255,255,.06)', ind:'rgba(77,109,250,.28)', on:'#fff', off:'#7F88AD' } : { bg:'rgba(255,255,255,.94)', ring:'rgba(20,32,90,.06)', ind:'#E7EBFF', on:'#304BC7', off:'#6B7186' };
+    const c = k => navIdx===k ? nav.on : nav.off;
+
+    const arc = [152,111,69,28].map(a=>a*Math.PI/180), R = 128;
+    const qaDefs = [['Property',IC.home,'property'],['Lease',IC.cal,'lease'],['Income',IC.up,'income'],['Expense',IC.down,'expense']];
+    const qaSecondary = [['Tenant',IC.users,'tenant'],['Maintenance',IC.wrench,'maintenance'],['Document',IC.file,'document'],['Reminder',IC.bell,'reminder']].map(([label,icon,key],i)=>({ label, icon,
+      tf: s.qa ? 'translateY(0px)' : 'translateY(16px)', delay:(rm?0:120+i*30)+'ms',
+      act: e => { e.stopPropagation(); this.setState({ qa:false }); setTimeout(()=>this.openForm(key), rm?0:180); } }));
+    const qaItems = qaDefs.map(([label,icon,key],i)=>({ label, icon, delay:(rm?0:i*32)+'ms',
+      tf: s.qa ? `translate(${(Math.cos(arc[i])*R).toFixed(1)}px, ${(-Math.sin(arc[i])*R-26).toFixed(1)}px) scale(1)` : 'translate(0px, 0px) scale(.3)',
+      act: e => { e.stopPropagation(); this.setState({ qa:false }); setTimeout(()=>this.openForm(key), rm?0:180); } }));
+    const qaOld = qaDefs.map(([label])=>({ label,
+      act: e => { e.stopPropagation(); (label==='Income'||label==='Expense') ? (this.go('finance'), this.showToast(`New ${label.toLowerCase()} — form opens here`)) : this.showToast(`Add ${label.toLowerCase()} — flow opens here`); } }));
+
+    const screens = [['welcome','Welcome','01'],['home','Home','07'],['portfolio','Property portfolio','10'],['detail','Property detail','12'],['finance','Finance command center','21'],['notifs','Notification center','08'],['overdue','Overdue rent','33'],['reminder','Reminder detail','39'],['nsettings','Notification settings','47'],['more','Operating system','46'],['ai','Ask your portfolio','45']];
+    const light = scr==='welcome' || scr==='detail';
+    const t = (k)=>()=>this.showToast(k);
+
+    return {
+      tr, aIn: rm ? 'none' : 'hIn 380ms cubic-bezier(.2,.8,.2,1) both', aDraw: rm ? 'none' : 'draw 1400ms cubic-bezier(.4,0,.2,1) both', aGrow: rm ? 'none' : 'grow 600ms cubic-bezier(.2,.8,.2,1) both', aFade: rm ? 'none' : 'fadeUp 260ms ease both',
+      screenList: screens.map(([k,l,num])=>({ label:l, num:'#'+num, bg: scr===k ? '#fff' : 'transparent', fg: scr===k ? '#304BC7' : '#111830', go:()=>this.go(k) })),
+      sbColor: light ? '#fff' : '#111830', homeInd: scr==='welcome' ? '#111830' : '#111830',
+      isWelcome: scr==='welcome', isHome: scr==='home', isPortfolio: scr==='portfolio', isDetail: scr==='detail', isFinance: scr==='finance', isMore: scr==='more', isAI: scr==='ai',
+      showNav: ['home','portfolio','finance','more'].includes(scr),
+      goHome:()=>this.go('home'), goPortfolio:()=>this.go('portfolio'), goFinance:()=>this.go('finance'), goMore:()=>this.go('more'), goAI:()=>this.go('ai'),
+      goBack:()=>{ const h = [...(s.hist||[])]; const prev = h.pop() || 'home'; this.setState({ screen:prev, hist:h, qa:false }); if (prev==='finance') this.count('finV', 627+s.incAdj-s.expAdj); },
+      ...this.extraVals(s, rm),
+      heroTxt: s.heroV.toFixed(1), finTxt: Math.round(s.finV),
+      homeLine, homeArea: homeLine + ' L372 170 L8 170 Z', homeEnd:{ x:pts[n-1][0], y:pts[n-1][1] },
+      attention: [
+        ...(s.overduePaid ? [] : [{ title:'Rent overdue', sub:'LuxeApart Unit 3 · Ahmed Khan · Rs46K', when:'3 days', kind:'bad', icon:IC.alert, go:()=>this.go('overdue') }]),
+        { title:'Lease ends soon', sub:'Green Villa · Jane Doe', when:'28 days', kind:'warn', icon:IC.cal, go:()=>this.go('detail',{sel:0}) },
+        { title:'HVAC service needed', sub:'Downtown Commercial Plaza · high priority', when:'Today', kind:'warn', icon:IC.wrench, go:()=>this.go('detail',{sel:2}) },
+        { title:'Insurance renewal', sub:'LuxeApart Residencies · building policy', when:'14 days', kind:'info', icon:IC.shield, go:()=>this.go('detail',{sel:1}) },
+      ].map((a,i)=>({ ...a, color:TONE[a.kind][0], tint:TONE[a.kind][1], border: i ? '1px solid #EEF1F8' : '0' })),
+      carousel: PROPS.map((p,i)=>({ ...this.card(p,i), tf: rm ? 'none' : (i===s.car ? 'scale(1)' : 'scale(.94)'), shadow: i===s.car ? '0 24px 40px -22px rgba(20,32,90,.55)' : '0 10px 20px -18px rgba(20,32,90,.4)' })),
+      onCarScroll: e => { const i = Math.round(e.target.scrollLeft/266); if (i!==s.car) this.setState({car:i}); },
+      activity: [
+        { title:'Rent received', sub:'Green Villa · Today', amt:'+Rs120K', inc:true },
+        { title:'HVAC deposit', sub:'Downtown Plaza · Yesterday', amt:'−Rs20K', inc:false },
+        { title:'Rent received', sub:'TechVentures Corp · 27 Sep', amt:'+Rs240K', inc:true },
+        { title:'Property tax', sub:'Model Town Residence · 25 Sep', amt:'−Rs37K', inc:false },
+      ].map(tx=>({ ...tx, tint: tx.inc ? '#E3F5EC' : '#EEF1F8', color: tx.inc ? '#1B8A55' : '#4A5170', rot: tx.inc ? '90deg' : '0deg', amtColor: tx.inc ? '#1B8A55' : '#111830' })),
+
+      query: s.query, onQuery: e => this.setState({query:e.target.value}),
+      filters: ['All','House','Apartment','Commercial','Land'].map(f=>({ label:f, bg: s.filter===f ? '#4D6DFA' : '#fff', fg: s.filter===f ? '#fff' : '#4A5170', pick:()=>this.setState({filter:f}) })),
+      hasFeatured: !!sorted[0], featured, rest: sorted.slice(1).map(p=>this.card(p)), hasRest: sorted.length>1, isEmpty: sorted.length===0,
+      openQA:()=>this.setState({qa:true}),
+
+      dp, perf, perfTabs: [['value','Value'],['rent','Rent'],['expenses','Costs']].map(([k,l])=>({ label:l, bg: s.perf===k ? '#fff' : 'transparent', fg: s.perf===k ? '#111830' : '#6B7186', sh: s.perf===k ? '0 1px 3px rgba(20,32,90,.12)' : 'none', pick:()=>this.setState({perf:k}) })),
+      docs: [{name:'Lease agreement',meta:'Expires Dec 2026',color:'#6B7186'},{name:'Ownership deed',meta:'Verified',color:'#1B8A55'},{name:'Insurance policy',meta:'Renew in 14 days',color:'#B7741A'},{name:'Tax receipts',meta:'6 files · 2026',color:'#6B7186'}],
+      toastTenant: t('Add tenant — flow opens here'), addLeaseHere:()=>this.openForm('lease', { prop:s.sel, rent:String(P.rent.toLocaleString()) }),
+
+      range: s.range, rangeX: (ri*42)+'px',
+      ranges: rangeKeys.map(k=>({ label:k, fg: s.range===k ? '#fff' : '#6B7186', pick:()=>this.setState({range:k, finSel:FIN[k].inc.length-1}) })),
+      finBars, finSelData: { label: (F.full||F.labels)[sel] + (s.range==='ALL' ? '' : s.range==='1M' ? ' · September' : ''), inc: fKK(F.inc[sel]), exp: fKK(F.exp[sel]), net: fKK(F.inc[sel]-F.exp[sel]) },
+      tot: { inc:fKK(sumI), exp:fKK(sumE), net:fKK(sumI-sumE) },
+      insights: [
+        { stat:'+8.4%', text:'Rental income rose versus last quarter, led by Downtown Commercial Plaza.', src:'Jul–Sep vs Apr–Jun', bg:'#304BC7', fg:'#fff' },
+        { stat:'45%', text:'of this month\u2019s expenses went to maintenance — the largest category.', src:'September expenses', bg:'#fff', fg:'#111830' },
+        { stat:'94.6%', text:'of rent due in September has been collected. Rs46K is outstanding.', src:'Rent ledger', bg:'#fff', fg:'#111830' },
+        { stat:'9.1%', text:'Downtown Commercial Plaza has the highest rental yield in your portfolio.', src:'Net rent ÷ current value', bg:'#fff', fg:'#111830' },
+      ],
+      txns: [
+        { title:'Rent · Green Villa', sub:'Jane Doe · 29 Sep', amt:'+Rs120K', inc:true },
+        { title:'HVAC deposit', sub:'Downtown Plaza · 28 Sep', amt:'−Rs20K', inc:false },
+        { title:'Rent · Downtown Plaza', sub:'TechVentures Corp · 27 Sep', amt:'+Rs240K', inc:true },
+        { title:'Electricity', sub:'LuxeApart common areas · 26 Sep', amt:'−Rs31K', inc:false },
+        { title:'Property tax', sub:'Model Town Residence · 25 Sep', amt:'−Rs37K', inc:false },
+      ].map(tx=>({ ...tx, tint: tx.inc ? '#E3F5EC' : '#EEF1F8', color: tx.inc ? '#1B8A55' : '#4A5170', rot: tx.inc ? '90deg' : '0deg', amtColor: tx.inc ? '#1B8A55' : '#111830' })),
+
+      ops: [
+        { label:'Tenants', sub:'Leases & payments', count:'6', flag:'1 overdue', flagColor:'#D23B40', icon:IC.users, go:t('Tenants — opens tenant list') },
+        { label:'Maintenance', sub:'Open requests', count:'5', flag:'1 urgent', flagColor:'#B7741A', icon:IC.wrench, go:t('Maintenance — opens timeline') },
+        { label:'Calendar', sub:'This week', count:'3', flag:'', flagColor:'#6B7186', icon:IC.cal, go:t('Calendar — opens reminders') },
+        { label:'Documents', sub:'In your vault', count:'24', flag:'2 expiring', flagColor:'#B7741A', icon:IC.file, go:t('Document vault — opens here') },
+      ],
+      menuGroups: [
+        { title:'RECORDS', items:[ { label:'Reports & export', val:'Monthly', icon:IC.chart }, { label:'Compare properties', val:'', icon:IC.compare } ] },
+        { title:'ACCOUNT', items:[ { label:'Notifications', val:'On', icon:IC.bell }, { label:'Security & Face ID', val:'', icon:IC.lock }, { label:'Currency', val:'PKR Rs', icon:IC.coin }, { label:'Help & support', val:'', icon:IC.help } ] },
+      ].map(g=>({ ...g, items: g.items.map((it,i)=>({ ...it, border: i ? '1px solid #EEF1F8' : '0', go: it.label==='Notifications' ? ()=>this.go('nsettings') : t(it.label + ' — opens here') })) })),
+      toastProfile: t('Profile — opens here'), toastPro: t('Homely Pro — plans open here'), toastNotif: t('4 new notifications'),
+
+      chatRef: this.chatRef, noChat: s.chat.length===0,
+      chat: s.chat.map(m=>({ text:m.text, align: m.q ? 'flex-end' : 'flex-start', bg: m.q ? '#4D6DFA' : '#fff', fg: m.q ? '#fff' : '#111830', radius: m.q ? '20px 20px 6px 20px' : '20px 20px 20px 6px', note: m.q ? '' : 'Based on your recorded data' })),
+      aiCards: [ { stat:'+7.8%', text:'Rental income this quarter compared with last.' }, { stat:'2', text:'Leases expire within the next 60 days.' }, { stat:'Rs65K', text:'Downtown Plaza has the highest monthly costs.' } ],
+      suggestions: Object.keys(ANSWERS).map(qq=>({ q:qq, ask:()=>this.ask(qq) })),
+      typed: s.typed, onType: e=>this.setState({typed:e.target.value}), onKey: e=>{ if (e.key==='Enter') this.ask(s.typed); }, sendTyped:()=>this.ask(s.typed),
+
+      qaOp: s.qa ? 1 : 0, qaPe: s.qa ? 'auto' : 'none', qaItems, qaSecondary, attnN: s.overduePaid ? 3 : 4, plusRot: s.qa ? '45deg' : '0deg',
+      toggleQA:()=>this.setState({qa:!s.qa}), closeQA:()=>this.setState({qa:false}),
+      nav, navX, navIndOp: navIdx==null ? 0 : 1, navC:{ home:c(0), port:c(1), fin:c(3), more:c(4) },
+      toast: s.toast, toastOp: s.toastOn ? 1 : 0, toastY: s.toastOn ? '0px' : '-10px',
+    };
+  }
+}
+</script>
+</body>
+</html>
