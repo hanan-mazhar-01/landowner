@@ -100,8 +100,13 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final isCompact = screenHeight < 740;
     final bottom = MediaQuery.paddingOf(context).bottom;
     final isLastPage = _page == _slides.length - 1;
+    final bottomPadding = isCompact ? (bottom + 12.0) : (bottom + 24.0);
+    final ctaGap = isCompact ? 16.0 : 28.0;
+    final ctaHeight = isCompact ? 52.0 : 58.0;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -114,11 +119,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
             onPageChanged: (i) => setState(() => _page = i),
             itemBuilder: (_, i) => _SlideView(slide: _slides[i]),
           ),
-          Positioned(top: MediaQuery.paddingOf(context).top + 20, left: 28, child: const _GlassBrand()),
+          Positioned(top: MediaQuery.paddingOf(context).top + (isCompact ? 10 : 20), left: 28, child: const _GlassBrand()),
           Positioned(
             left: 28,
             right: 28,
-            bottom: bottom + 24,
+            bottom: bottomPadding,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Row(children: [
                 for (var i = 0; i < _slides.length; i++) ...[
@@ -135,22 +140,22 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                   ),
                 ],
               ]),
-              const SizedBox(height: 28),
+              SizedBox(height: ctaGap),
               GradientCta(
                 label: isLastPage ? 'Get started' : 'Continue',
-                height: 58,
+                height: ctaHeight,
                 padding: 22,
-                style: AppType.button,
+                style: isCompact ? AppType.buttonSm : AppType.button,
                 shadow: AppShadows.cta,
                 onTap: isLastPage ? _start : _next,
               ),
               Pressable(
                 onTap: () => context.push(Routes.signIn),
                 child: SizedBox(
-                  height: 44,
+                  height: isCompact ? 38 : 44,
                   child: Center(
                     child: Text.rich(TextSpan(
-                      style: const TextStyle(fontSize: 15, color: AppColors.textMuted),
+                      style: TextStyle(fontSize: isCompact ? 14 : 15, color: AppColors.textMuted),
                       children: const [
                         TextSpan(text: 'I already have an account · '),
                         TextSpan(text: 'Sign in', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600)),
@@ -175,9 +180,14 @@ class _SlideView extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final isCustom = slide.customVisual != null;
+    final isCompact = screenHeight < 740;
     final visualHeight = isCustom
-        ? (screenHeight * 0.44).clamp(310.0, 400.0)
-        : (screenHeight * 0.52).clamp(380.0, 520.0);
+        ? (screenHeight * 0.40).clamp(240.0, 400.0)
+        : (screenHeight * (isCompact ? 0.44 : 0.50)).clamp(280.0, 500.0);
+    final textOffset = isCustom ? 0.0 : (isCompact ? -36.0 : -64.0);
+    final titleStyle = isCompact
+        ? AppType.welcome.copyWith(fontSize: 27, height: 1.12)
+        : AppType.welcome;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -212,16 +222,21 @@ class _SlideView extends StatelessWidget {
                 ),
         ),
         Transform.translate(
-          offset: Offset(0, isCustom ? 0 : -64),
+          offset: Offset(0, textOffset),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text.rich(TextSpan(style: AppType.welcome, children: [
+              Text.rich(TextSpan(style: titleStyle, children: [
                 TextSpan(text: slide.lead),
                 TextSpan(text: slide.accent, style: const TextStyle(color: AppColors.accent)),
               ])),
-              const SizedBox(height: 14),
-              Text(slide.body, style: AppType.body15),
+              SizedBox(height: isCompact ? 8 : 14),
+              Text(
+                slide.body,
+                style: isCompact ? AppType.body.copyWith(fontSize: 13.5, height: 1.4) : AppType.body15,
+                maxLines: isCompact ? 3 : 4,
+                overflow: TextOverflow.ellipsis,
+              ),
             ]),
           ),
         ),

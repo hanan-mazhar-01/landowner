@@ -8,16 +8,13 @@ import '../../../app/theme/app_decor.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/icons/homely_icon.dart';
 import '../../../core/utils/clock.dart';
-import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../../core/widgets/text_blocks.dart';
 import '../../../core/widgets/user_avatar.dart';
 import '../../../shared/providers/collections.dart';
 import '../../../shared/providers/portfolio.dart';
 import '../../auth/presentation/auth_providers.dart';
-import '../../auth/presentation/preferences_provider.dart';
 import '../../finance/presentation/finance_providers.dart';
-import '../../notifications/data/notification_settings_provider.dart';
 import 'more_widgets.dart';
 
 /// "Operating System" — everything that keeps the portfolio running.
@@ -37,7 +34,6 @@ class MoreScreen extends ConsumerWidget {
     final urgent = tickets.where((t) => t.priority.isSevere).length;
     final insights = ref.watch(financeInsightsProvider).length;
     final tenantCount = (ref.watch(tenantsProvider).value ?? const []).length;
-    final pushOn = ref.watch(notificationSettingsProvider).push;
 
     return CustomScrollView(slivers: [
       SliverList.list(children: [
@@ -55,10 +51,19 @@ class MoreScreen extends ConsumerWidget {
             const SizedBox(width: 14),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(user?.name ?? '', style: AppType.num(18)),
+                Text(
+                  user?.name ?? '',
+                  style: AppType.num(18),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 2),
-                Text('Owner · ${summary.count} ${summary.count == 1 ? 'property' : 'properties'}${user?.city.isNotEmpty == true ? ' · ${user!.city}' : ''}',
-                    style: AppType.meta),
+                Text(
+                  'Owner · ${summary.count} ${summary.count == 1 ? 'property' : 'properties'}${user?.city.isNotEmpty == true ? ' · ${user!.city}' : ''}',
+                  style: AppType.meta,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ]),
             ),
             const HomelyIcon(HomelyIcons.chevronRight, size: 18, color: AppColors.textFaint),
@@ -127,24 +132,16 @@ class MoreScreen extends ConsumerWidget {
           MenuItem(HomelyIcons.compare, 'Compare properties', onTap: () => context.push(Routes.report('performance'))),
           MenuItem(HomelyIcons.coin, 'Payments', onTap: () => context.push(Routes.payments)),
         ]),
-        const Overline('Account'),
+        const Overline('Settings'),
         MenuGroup(items: [
-          MenuItem(HomelyIcons.bell, 'Notifications',
-              value: pushOn ? 'On' : 'Off',
-              onTap: () => context.push(Routes.notificationSettings)),
-          MenuItem(HomelyIcons.lock, 'Profile & settings', onTap: () => context.push(Routes.profile)),
-          MenuItem(HomelyIcons.coin, 'Currency', value: ref.watch(preferencesProvider).currency, onTap: () => context.push(Routes.profile)),
-          MenuItem(HomelyIcons.shield, 'Privacy policy', onTap: () => context.push(Routes.privacyPolicy)),
-          MenuItem(HomelyIcons.file, 'Terms of service', onTap: () => context.push(Routes.termsOfService)),
-          MenuItem(HomelyIcons.help, 'Help & support', onTap: () => openSupportEmail(ref)),
-        ]),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 18, 24, AppSpacing.navClearance),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: LinkText('Sign out', color: AppColors.overdueText, onTap: () => ref.read(authRepositoryProvider).signOut()),
+          MenuItem(
+            HomelyIcons.lock,
+            'Profile & settings',
+            value: 'Account, preferences & security',
+            onTap: () => context.push(Routes.profile),
           ),
-        ),
+        ]),
+        const SizedBox(height: AppSpacing.navClearance),
       ]),
     ]);
   }

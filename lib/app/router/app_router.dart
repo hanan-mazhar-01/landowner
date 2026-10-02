@@ -32,14 +32,13 @@ final routerProvider = Provider<GoRouter>((ref) {
   GoRoute page(String path, Widget Function(GoRouterState s) build) =>
       GoRoute(path: path, parentNavigatorKey: rootKey, pageBuilder: (_, s) => homelyPage(s, build(s)));
 
-  const publicPaths = {
+  const unauthOnlyPaths = {
     Routes.welcome,
     Routes.signIn,
     Routes.signUp,
     Routes.forgot,
-    Routes.privacyPolicy,
-    Routes.termsOfService,
   };
+
   return GoRouter(
     navigatorKey: rootKey,
     initialLocation: Routes.splash,
@@ -47,14 +46,36 @@ final routerProvider = Provider<GoRouter>((ref) {
     // providers that nobody listens to.
     refreshListenable: ref.watch(authRefreshProvider),
     redirect: (context, state) {
-      final auth = ref.read(authStateProvider);
       final loc = state.matchedLocation;
+      final uriPath = state.uri.path;
+      final isLegal = loc == Routes.privacyPolicy ||
+          loc == Routes.termsOfService ||
+          loc.startsWith(Routes.privacyPolicy) ||
+          loc.startsWith(Routes.termsOfService) ||
+          uriPath == Routes.privacyPolicy ||
+          uriPath == Routes.termsOfService ||
+          uriPath.startsWith(Routes.privacyPolicy) ||
+          uriPath.startsWith(Routes.termsOfService);
+
+      if (isLegal) {
+        debugPrint('[GoRouter redirect] Allow legal route: loc=$loc, uri=$uriPath');
+        return null;
+      }
+
+      final auth = ref.read(authStateProvider);
       if (auth.isLoading && !auth.hasValue) return loc == Routes.splash ? null : Routes.splash;
       final signedIn = auth.value != null;
-      if (!signedIn) return publicPaths.contains(loc) ? null : Routes.welcome;
-      if (loc == Routes.locationSetup) return null;
-      if (loc == Routes.signUp && signedIn) return Routes.locationSetup;
-      if (publicPaths.contains(loc) || loc == Routes.splash) return Routes.home;
+      if (!signedIn) {
+        if (unauthOnlyPaths.contains(loc) || unauthOnlyPaths.contains(uriPath)) return null;
+        debugPrint('[GoRouter redirect] Unauthenticated -> welcome (from $loc)');
+        return Routes.welcome;
+      }
+      if (loc == Routes.locationSetup || uriPath == Routes.locationSetup) return null;
+      if ((loc == Routes.signUp || uriPath == Routes.signUp) && signedIn) return Routes.locationSetup;
+      if (unauthOnlyPaths.contains(loc) || unauthOnlyPaths.contains(uriPath) || loc == Routes.splash) {
+        debugPrint('[GoRouter redirect] Authenticated on unauth/splash -> home (from $loc)');
+        return Routes.home;
+      }
       return null;
     },
     routes: [

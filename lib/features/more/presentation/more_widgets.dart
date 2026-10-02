@@ -56,14 +56,29 @@ class OpsTile extends StatelessWidget {
               color: AppColors.blue50,
               child: HomelyIcon(icon, size: 18, color: AppColors.primary, strokeWidth: 1.9),
             ),
-            const Spacer(),
-            Text(flag, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: flagColor)),
+            if (flag.isNotEmpty) ...[
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  flag,
+                  textAlign: TextAlign.right,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: flagColor),
+                ),
+              ),
+            ] else
+              const Spacer(),
           ]),
           const SizedBox(height: 14),
-          Text(count, style: AppType.num(28, FontWeight.w800, -.8)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(count, style: AppType.num(28, FontWeight.w800, -.8)),
+          ),
           const SizedBox(height: 1),
-          Text(label, style: AppType.label14),
-          Text(sub, style: AppType.caption),
+          Text(label, style: AppType.label14, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(sub, style: AppType.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
         ]),
       );
 }
@@ -98,8 +113,18 @@ class MenuGroup extends StatelessWidget {
                 child: Row(children: [
                   HomelyIcon(items[i].icon, size: 19, color: AppColors.primary, strokeWidth: 1.9),
                   const SizedBox(width: 14),
-                  Expanded(child: Text(items[i].label, style: AppType.menuItem)),
-                  Text(items[i].value, style: const TextStyle(fontSize: 13, color: AppColors.textFaint)),
+                  Expanded(
+                    child: Text(
+                      items[i].label,
+                      style: AppType.menuItem,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (items[i].value.isNotEmpty) ...[
+                    const SizedBox(width: 8),
+                    Text(items[i].value, style: const TextStyle(fontSize: 13, color: AppColors.textFaint)),
+                  ],
                   const SizedBox(width: 8),
                   const HomelyIcon(HomelyIcons.chevronRight, size: 16, color: AppColors.chevron),
                 ]),

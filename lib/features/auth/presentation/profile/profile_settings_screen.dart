@@ -19,6 +19,7 @@ import '../../../../shared/data/seed/firestore_seeder.dart';
 import '../../../../shared/widgets/sub_page.dart';
 import '../../../legal/presentation/legal_screen.dart';
 import '../../../more/presentation/more_widgets.dart';
+import '../../../notifications/data/notification_settings_provider.dart';
 import '../auth_providers.dart';
 import '../preferences_provider.dart';
 import 'data_export.dart';
@@ -63,10 +64,26 @@ class ProfileSettingsScreen extends ConsumerWidget {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(u?.name ?? '', style: AppType.num(18)),
+                    Text(
+                      u?.name ?? '',
+                      style: AppType.num(18),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     const SizedBox(height: 2),
-                    Text(u?.email ?? '', style: AppType.meta),
-                    if ((u?.phone ?? '').isNotEmpty) Text(u!.phone, style: AppType.meta),
+                    Text(
+                      u?.email ?? '',
+                      style: AppType.meta,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if ((u?.phone ?? '').isNotEmpty)
+                      Text(
+                        u!.phone,
+                        style: AppType.meta,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                   ]),
                 ),
               ]),
@@ -111,7 +128,12 @@ class ProfileSettingsScreen extends ConsumerWidget {
         const SliverToBoxAdapter(child: Overline('Notifications')),
         SliverToBoxAdapter(
           child: MenuGroup(items: [
-            MenuItem(HomelyIcons.bell, 'Notification settings', onTap: () => context.push(Routes.notificationSettings)),
+            MenuItem(
+              HomelyIcons.bell,
+              'Notification settings',
+              value: ref.watch(notificationSettingsProvider).push ? 'On' : 'Off',
+              onTap: () => context.push(Routes.notificationSettings),
+            ),
           ]),
         ),
         const SliverToBoxAdapter(child: Overline('Security')),

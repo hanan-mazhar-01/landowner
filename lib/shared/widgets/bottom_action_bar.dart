@@ -12,7 +12,9 @@ class BottomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = math.max(MediaQuery.paddingOf(context).bottom, 20.0);
+    final media = MediaQuery.of(context);
+    final insets = media.viewInsets.bottom;
+    final bottom = insets > 0 ? 12.0 : math.max(media.padding.bottom, 16.0);
     return Container(
       padding: EdgeInsets.fromLTRB(24, 12, 24, bottom),
       decoration: const BoxDecoration(

@@ -30,8 +30,11 @@ class _DetailHeaderState extends State<DetailHeader> {
     final top = MediaQuery.paddingOf(context).top + 8;
     final status = widget.m.statusIsAttention ? AppColors.attentionText : AppColors.positiveText;
 
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final headerHeight = (screenHeight * 0.44).clamp(320.0, 430.0);
+
     return SizedBox(
-      height: 420,
+      height: headerHeight,
       child: Stack(fit: StackFit.expand, children: [
         if (photos.isEmpty)
           const ColoredBox(color: AppColors.imagePlaceholder)
@@ -73,17 +76,31 @@ class _DetailHeaderState extends State<DetailHeader> {
           ]),
         ),
         Positioned(
-          left: 24,
-          right: 24,
-          bottom: 52,
+          left: 20,
+          right: 20,
+          bottom: 48,
           child: IgnorePointer(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              PhotoStatusPill(label: '${widget.m.statusLabel} · ${p.type.label}', color: status, strong: true),
-              const SizedBox(height: 6),
-              Text(p.name, style: AppType.detailTitle.copyWith(color: AppColors.white)),
-              const SizedBox(height: 6),
-              Text(p.address, style: TextStyle(fontSize: 14, color: AppColors.white.withValues(alpha: .85))),
-            ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PhotoStatusPill(label: '${widget.m.statusLabel} · ${p.type.label}', color: status, strong: true),
+                const SizedBox(height: 6),
+                Text(
+                  p.name,
+                  style: AppType.detailTitle.copyWith(color: AppColors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  p.address,
+                  style: TextStyle(fontSize: 13, color: AppColors.white.withValues(alpha: .85)),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ),
       ]),

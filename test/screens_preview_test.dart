@@ -42,6 +42,7 @@ final _skip = !Platform.environment.containsKey('PREVIEW');
 
 void main() {
   setUpAll(() async {
+    if (_skip) return;
     NetImage.enabled = false;
     await _loadFonts();
   });

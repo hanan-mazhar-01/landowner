@@ -252,8 +252,13 @@ class FirebaseAuthRepository implements AuthRepository {
         nonce: sha256Nonce,
       );
 
+      final identityToken = appleCred.identityToken;
+      if (identityToken == null) {
+        throw const AuthFailure('Apple sign-in failed: no identity token was provided.');
+      }
+
       final oauthCred = fb.OAuthProvider('apple.com').credential(
-        idToken: appleCred.identityToken,
+        idToken: identityToken,
         rawNonce: rawNonce,
       );
 

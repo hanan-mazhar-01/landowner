@@ -101,17 +101,19 @@ class ReportsScreen extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(children: [
-              SortButton(
-                label: f.propertyId == null ? 'All properties' : props[f.propertyId] ?? '',
-                onTap: () async {
-                  final r = await showChoiceSheet(context,
-                      title: 'Property', options: ['All properties', ...props.values], selected: props[f.propertyId] ?? 'All properties');
-                  if (r == null) return;
-                  final id = props.entries.where((e) => e.value == r).map((e) => e.key).firstOrNull;
-                  ref.read(reportFilterProvider.notifier).set(ReportFilter(f.period, id));
-                },
+              Flexible(
+                child: SortButton(
+                  label: f.propertyId == null ? 'All properties' : props[f.propertyId] ?? '',
+                  onTap: () async {
+                    final r = await showChoiceSheet(context,
+                        title: 'Property', options: ['All properties', ...props.values], selected: props[f.propertyId] ?? 'All properties');
+                    if (r == null) return;
+                    final id = props.entries.where((e) => e.value == r).map((e) => e.key).firstOrNull;
+                    ref.read(reportFilterProvider.notifier).set(ReportFilter(f.period, id));
+                  },
+                ),
               ),
-              const Spacer(),
+              const SizedBox(width: 12),
               Text(f.period.range, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
             ]),
           ),

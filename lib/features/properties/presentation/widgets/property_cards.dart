@@ -58,7 +58,11 @@ class PropertyRow extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(Money.k(m.net), style: AppType.num(16)),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Text(Money.k(m.net), style: AppType.num(16)),
+            ),
             const SizedBox(height: 3),
             const Text('net / mo', style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
             const SizedBox(height: 3),

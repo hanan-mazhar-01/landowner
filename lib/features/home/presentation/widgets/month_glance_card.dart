@@ -165,6 +165,8 @@ class MonthGlanceCard extends StatelessWidget {
                       from: const Offset(8, 0),
                       child: Text(
                         units == 0 ? 'No units added' : '$occupied of $units units occupied',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 12, color: AppColors.white.withValues(alpha: .8)),
                       ),
                     ),

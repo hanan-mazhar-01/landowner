@@ -49,9 +49,16 @@ class NotificationTile extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(n.title,
-                  style: TextStyle(
-                      fontSize: 15, fontWeight: n.unread ? FontWeight.w700 : FontWeight.w500, color: AppColors.ink)),
+              Text(
+                n.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: n.unread ? FontWeight.w700 : FontWeight.w500,
+                  color: AppColors.ink,
+                ),
+              ),
               const SizedBox(height: 2),
               Text(n.body,
                   maxLines: 1,

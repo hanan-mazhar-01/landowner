@@ -104,8 +104,17 @@ class SolidButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(radius),
             border: border == null ? null : Border.all(color: border!),
           ),
-          child: Text(label,
-              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, color: foreground)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                label,
+                maxLines: 1,
+                style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, color: foreground),
+              ),
+            ),
+          ),
         ),
       );
 }

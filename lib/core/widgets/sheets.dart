@@ -18,7 +18,7 @@ class _SheetShell extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         width: double.infinity,
         constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .8),
-        padding: EdgeInsets.fromLTRB(24, 10, 24, MediaQuery.paddingOf(context).bottom + 20),
+        padding: EdgeInsets.fromLTRB(24, 10, 24, MediaQuery.paddingOf(context).bottom + 20 + MediaQuery.viewInsetsOf(context).bottom),
         decoration: const BoxDecoration(
           color: AppColors.background,
           borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.hero)),
@@ -143,7 +143,14 @@ class SortButton extends StatelessWidget {
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             const HomelyIcon(HomelyIcons.sliders, size: 14, strokeWidth: 2, color: AppColors.primary),
             const SizedBox(width: 6),
-            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary),
+              ),
+            ),
           ]),
         ),
       );

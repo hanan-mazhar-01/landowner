@@ -89,17 +89,38 @@ class _FormScreenState extends ConsumerState<FormScreen> {
           padding: EdgeInsets.fromLTRB(16, top, 16, 0),
           child: Row(children: [
             SizedBox(
-              width: 64,
+              width: 44,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: CircleIconButton(icon: HomelyIcons.close, iconSize: 18, onTap: () => context.pop(), semanticLabel: 'Close'),
               ),
             ),
-            Expanded(child: Center(child: Text(_spec.title, style: AppType.button15))),
-            SizedBox(
-              width: 64,
-              child: Text(_spec.multiStep ? 'Step ${_step + 1} of ${_spec.steps.length}' : 'Quick entry',
-                  textAlign: TextAlign.right, maxLines: 1, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Center(
+                child: Text(
+                  _spec.title,
+                  style: AppType.button15,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 44, maxWidth: 88),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    _spec.multiStep ? 'Step ${_step + 1} of ${_spec.steps.length}' : 'Quick entry',
+                    textAlign: TextAlign.right,
+                    maxLines: 1,
+                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  ),
+                ),
+              ),
             ),
           ]),
         ),

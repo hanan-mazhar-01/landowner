@@ -43,8 +43,11 @@ class AuthScaffold extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(padding: const EdgeInsets.fromLTRB(24, 22, 24, 24), children: [
-              Text(title, style: AppType.title28),
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              children: [
+                Text(title, style: AppType.title28),
               const SizedBox(height: 10),
               Text(subtitle, style: AppType.body15),
               for (final f in fields) ...[const SizedBox(height: 20), f],

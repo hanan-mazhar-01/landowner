@@ -115,7 +115,7 @@ class _NotificationCenterScreenState extends ConsumerState<NotificationCenterScr
           ),
         ),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 60),
+          padding: EdgeInsets.fromLTRB(16, 0, 16, MediaQuery.paddingOf(context).bottom + 32),
           sliver: SliverToBoxAdapter(
             child: list.isEmpty
                 ? SurfaceCard(

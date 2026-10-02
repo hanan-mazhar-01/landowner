@@ -141,11 +141,17 @@ class _ReportDetailScreenState extends ConsumerState<ReportDetailScreen> {
                         for (var i = 0; i < row.values.length; i++)
                           Expanded(
                             flex: 3,
-                            child: Text(r.cell(i, row.values[i]),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                r.cell(i, row.values[i]),
                                 textAlign: TextAlign.right,
                                 style: i == row.values.length - 1
                                     ? AppType.num(14, FontWeight.w800).copyWith(color: AppColors.primary)
-                                    : const TextStyle(fontSize: 13, color: AppColors.ink)),
+                                    : const TextStyle(fontSize: 13, color: AppColors.ink),
+                              ),
+                            ),
                           ),
                       ]),
                     ),

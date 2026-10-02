@@ -47,7 +47,7 @@ class SubPage extends StatelessWidget {
             ),
           ),
           ...slivers,
-          const SliverToBoxAdapter(child: SizedBox(height: 60)),
+          SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 48)),
         ];
 }
 

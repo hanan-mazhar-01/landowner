@@ -8,8 +8,12 @@ import '../../../app/theme/app_typography.dart';
 import '../../../core/icons/homely_icon.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/controls.dart';
+import '../../../core/widgets/pressable.dart';
 import '../../../core/widgets/surfaces.dart';
 import '../../../core/widgets/text_blocks.dart';
+import '../../../app/router/routes.dart';
+import '../../../core/services/local_notification_service.dart';
+import '../../../core/widgets/toast.dart';
 import '../../leases/domain/lease.dart';
 import '../data/notification_settings_provider.dart';
 
@@ -79,8 +83,73 @@ class NotificationSettingsScreen extends ConsumerWidget {
         ),
         const Overline('Default reminder timing'),
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 60),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           child: TimingGrid(selected: s.defaultTiming, onToggle: ctrl.toggleTiming, showCheck: false),
+        ),
+        const Overline('Test Notification'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 60),
+          child: SurfaceCard(
+            radius: AppRadius.card,
+            padding: const EdgeInsets.all(16),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Test Alert on iPhone', style: AppType.rowTitle),
+              const SizedBox(height: 4),
+              Text('Test instant alert or schedule a reminder to arrive in 1 minute.', style: AppType.caption),
+              const SizedBox(height: 14),
+              Row(children: [
+                Expanded(
+                  child: Pressable(
+                    onTap: () async {
+                      await LocalNotificationService.requestPermission();
+                      await LocalNotificationService.show(
+                        id: 99998,
+                        title: 'LandOwner Immediate Test',
+                        body: 'Push & alert system is active and working! 🔔',
+                        route: Routes.notifications,
+                      );
+                      ref.read(toastProvider.notifier).show('Instant notification sent!');
+                    },
+                    child: Container(
+                      height: 44,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.blue50,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: AppColors.blue200),
+                      ),
+                      child: const Text('Test Now',
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: GradientCta(
+                    label: 'Schedule 1 Min',
+                    height: 44,
+                    padding: 12,
+                    trailing: const HomelyIcon(HomelyIcons.bell, color: AppColors.white, size: 16),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.white),
+                    onTap: () async {
+                      await LocalNotificationService.requestPermission();
+                      final when = DateTime.now().add(const Duration(minutes: 1));
+                      await LocalNotificationService.sync([
+                        ScheduledAlert(
+                          key: 'test:1min:${DateTime.now().millisecondsSinceEpoch}',
+                          at: when,
+                          title: 'LandOwner 1-Min Reminder',
+                          body: 'Your 1-minute test alert arrived successfully! ⏰',
+                          route: Routes.notifications,
+                        ),
+                      ]);
+                      ref.read(toastProvider.notifier).show('Scheduled for 1 min! Lock screen to test.');
+                    },
+                  ),
+                ),
+              ]),
+            ]),
+          ),
         ),
       ]),
     );

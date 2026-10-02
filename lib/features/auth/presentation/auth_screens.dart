@@ -27,7 +27,9 @@ mixin _Submit<T extends ConsumerStatefulWidget> on ConsumerState<T> {
     try {
       await action();
     } on AuthFailure catch (e) {
-      if (mounted) setState(() => error = e.message);
+      if (!e.message.toLowerCase().contains('cancel')) {
+        if (mounted) setState(() => error = e.message);
+      }
     } catch (_) {
       if (mounted) setState(() => error = 'Something went wrong. Please try again.');
     } finally {

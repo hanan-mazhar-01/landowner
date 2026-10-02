@@ -10,7 +10,7 @@ import '../auth_providers.dart';
 FormSpec editProfileForm(AppUser u) => FormSpec(
       title: 'Edit profile',
       initial: FormValues({
-        'photo': <String>[?u.avatarUrl],
+        'photo': <String>[if (u.avatarUrl != null) u.avatarUrl!],
         'name': u.name,
         'email': u.email,
         'phone': u.phone,

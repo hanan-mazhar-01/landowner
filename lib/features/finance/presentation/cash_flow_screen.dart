@@ -48,12 +48,30 @@ class _CashFlowScreenState extends ConsumerState<CashFlowScreen> {
           decoration: first ? null : const BoxDecoration(border: Border(top: BorderSide(color: AppColors.dividerSoft))),
           child: Row(children: [
             Expanded(flex: 5, child: Text(label, style: AppType.rowTitle, maxLines: 1, overflow: TextOverflow.ellipsis)),
-            Expanded(flex: 3, child: Text(Money.compact(inc), textAlign: TextAlign.right, style: const TextStyle(fontSize: 13, color: AppColors.positiveText))),
-            Expanded(flex: 3, child: Text(Money.compact(exp), textAlign: TextAlign.right, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary))),
             Expanded(
               flex: 3,
-              child: Text(Money.compact(inc - exp),
-                  textAlign: TextAlign.right, style: AppType.num(14, FontWeight.w800).copyWith(color: AppColors.primary)),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(Money.compact(inc), textAlign: TextAlign.right, style: const TextStyle(fontSize: 13, color: AppColors.positiveText)),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(Money.compact(exp), textAlign: TextAlign.right, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(Money.compact(inc - exp),
+                    textAlign: TextAlign.right, style: AppType.num(14, FontWeight.w800).copyWith(color: AppColors.primary)),
+              ),
             ),
           ]),
         );

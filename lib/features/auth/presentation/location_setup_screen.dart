@@ -196,7 +196,12 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     final bottom = MediaQuery.paddingOf(context).bottom;
+    final viewInsets = MediaQuery.viewInsetsOf(context).bottom;
+    final isCompact = size.height < 700;
+    final visualHeight = (size.height * 0.25).clamp(130.0, 220.0);
+    final horizontalPad = (size.width * 0.07).clamp(20.0, 28.0);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -245,16 +250,16 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
               // Main Content
               Positioned.fill(
                 top: 56,
-                bottom: bottom + 20,
+                bottom: bottom + 20 + viewInsets,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPad),
                   child: Column(
                     children: [
-                      const SizedBox(height: 16),
+                      SizedBox(height: isCompact ? 8 : 16),
 
                       // 3D Spatial Globe Visual
                       SizedBox(
-                        height: 220,
+                        height: visualHeight,
                         width: double.infinity,
                         child: _state == _LocationState.notifications
                             ? const _BellVisual()
@@ -268,7 +273,7 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
                                 ),
                               ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: isCompact ? 14 : 20),
 
                       // Headline and Supporting Text
                       Text(
@@ -277,7 +282,7 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
                           _LocationState.notifications => 'Never miss a rent day.',
                           _ => 'Set up LandOwner for you.',
                         },
-                        style: AppType.title28,
+                        style: isCompact ? AppType.title28.copyWith(fontSize: 24) : AppType.title28,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10),
@@ -287,10 +292,10 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
                           _LocationState.notifications => 'Get a reminder before rent is due, when a payment is late, and before leases, insurance or documents expire.',
                           _ => 'Allow location to set your city and currency automatically, or choose them yourself.',
                         },
-                        style: AppType.body15,
+                        style: isCompact ? AppType.body15.copyWith(fontSize: 14) : AppType.body15,
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 28),
+                      SizedBox(height: isCompact ? 18 : 28),
 
                       // State-specific layout
                       if (_state == _LocationState.initial) ...[
@@ -625,14 +630,16 @@ class _SpatialGlobeVisual extends StatelessWidget {
       builder: (context, constraints) {
         final w = constraints.maxWidth;
         final h = constraints.maxHeight;
+        final globeDiameter = (h * 0.64).clamp(90.0, 140.0);
+        final coronaSize = (globeDiameter * 1.25 + (pulse * 8)).clamp(110.0, 180.0);
 
         return Stack(
           alignment: Alignment.center,
           children: [
             // Atmospheric Corona
             Container(
-              width: 170 + (pulse * 10),
-              height: 170 + (pulse * 10),
+              width: coronaSize,
+              height: coronaSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
@@ -648,13 +655,13 @@ class _SpatialGlobeVisual extends StatelessWidget {
 
             // Globe Body & Coordinate Grid
             CustomPaint(
-              size: const Size(140, 140),
+              size: Size(globeDiameter, globeDiameter),
               painter: _GlobePainter(pulse: pulse),
             ),
 
             // Pulsing Location Beacon Pin
             Positioned(
-              top: h * 0.24,
+              top: h * 0.22,
               child: Container(
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
@@ -668,8 +675,8 @@ class _SpatialGlobeVisual extends StatelessWidget {
 
             // Floating Currency Token
             Positioned(
-              right: w * 0.22,
-              bottom: h * 0.18,
+              right: (w * 0.22).clamp(16.0, 90.0),
+              bottom: (h * 0.16).clamp(10.0, 40.0),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
@@ -755,16 +762,22 @@ class _BellVisual extends StatelessWidget {
   const _BellVisual();
 
   @override
-  Widget build(BuildContext context) => Center(
-    child: Container(
-      width: 132,
-      height: 132,
-      decoration: BoxDecoration(
-        gradient: AppGradients.cta,
-        borderRadius: BorderRadius.circular(40),
-        boxShadow: AppShadows.plus,
+  Widget build(BuildContext context) {
+    final h = MediaQuery.sizeOf(context).height;
+    final size = (h * 0.15).clamp(96.0, 132.0);
+    final iconSize = (size * 0.44).roundToDouble();
+
+    return Center(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          gradient: AppGradients.cta,
+          borderRadius: BorderRadius.circular(size * 0.3),
+          boxShadow: AppShadows.plus,
+        ),
+        child: Center(child: HomelyIcon(HomelyIcons.bell, size: iconSize, color: AppColors.white, strokeWidth: 1.8)),
       ),
-      child: const Center(child: HomelyIcon(HomelyIcons.bell, size: 58, color: AppColors.white, strokeWidth: 1.8)),
-    ),
-  );
+    );
+  }
 }

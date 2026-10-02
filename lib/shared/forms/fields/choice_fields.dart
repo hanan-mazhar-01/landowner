@@ -27,20 +27,25 @@ class SegField extends StatelessWidget {
           duration: Motion.of(context, AppMotion.transition),
           curve: AppMotion.standard,
           height: chips ? 36 : 42,
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: on ? AppColors.ink : AppColors.surface,
             borderRadius: BorderRadius.circular(chips ? 18 : 14),
             border: Border.all(color: on ? AppColors.ink : AppColors.border),
           ),
-          child: Text(o,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              o,
               maxLines: 1,
               style: TextStyle(
                 fontSize: chips ? 13 : 14,
                 fontWeight: FontWeight.w600,
                 color: on ? AppColors.white : AppColors.textSecondary,
-              )),
+              ),
+            ),
+          ),
         ),
       );
     }
@@ -51,7 +56,8 @@ class SegField extends StatelessWidget {
       final rows = <List<String>>[[]];
       var used = 0.0;
       for (final o in options) {
-        final w = o.length * 8.2 + 28 + 6;
+        // Safe minimum width per option (char width + padding + margins)
+        final w = o.length * 11.0 + 28.0;
         if (used + w > c.maxWidth && rows.last.isNotEmpty) {
           rows.add([]);
           used = 0;
@@ -65,7 +71,10 @@ class SegField extends StatelessWidget {
           Row(children: [
             for (var i = 0; i < rows[r].length; i++) ...[
               if (i > 0) const SizedBox(width: 6),
-              Expanded(flex: rows[r][i].length + 4, child: tile(rows[r][i])),
+              Expanded(
+                flex: (rows[r][i].length * 10).clamp(40, 160),
+                child: tile(rows[r][i]),
+              ),
             ],
           ]),
         ],

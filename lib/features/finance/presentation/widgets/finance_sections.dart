@@ -184,46 +184,49 @@ class ExpenseDonutCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
           ],
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InterlockingDonutChart(
-                size: 148,
-                shares: rows.map((r) => r.share).toList(),
-                colors: rows.map((r) => r.color).toList(),
-                showLabels: false,
-                center: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CountUpText(
-                      value: total,
-                      format: Money.compact,
-                      delay: const Duration(milliseconds: 250),
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.ink,
-                        letterSpacing: -0.4,
-                      ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final chartSize = (constraints.maxWidth * 0.42).clamp(116.0, 148.0);
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InterlockingDonutChart(
+                    size: chartSize,
+                    shares: rows.map((r) => r.share).toList(),
+                    colors: rows.map((r) => r.color).toList(),
+                    showLabels: false,
+                    center: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CountUpText(
+                          value: total,
+                          format: Money.compact,
+                          delay: const Duration(milliseconds: 250),
+                          style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: (chartSize * 0.09).clamp(11.0, 13.5),
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.ink,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        Text(
+                          'total expenses',
+                          style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: (chartSize * 0.058).clamp(7.5, 8.5),
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textMuted,
+                          ),
+                        ),
+                      ],
                     ),
-                    const Text(
-                      'total expenses',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 8.5,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textMuted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                     for (var i = 0; i < rows.length; i++) ...[
                       if (i > 0) const SizedBox(height: 10),
                       StaggeredEntrance(
@@ -306,9 +309,11 @@ class ExpenseDonutCard extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
-    );
+    ],
+  ),
+);
   }
 }

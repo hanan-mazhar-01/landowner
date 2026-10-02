@@ -34,13 +34,15 @@ class ValueRow extends StatelessWidget {
           ]),
         ),
         // No purchase price recorded → nothing to compare against.
-        if (p.purchasePrice > 0)
+        if (p.purchasePrice > 0) ...[
+          const SizedBox(width: 8),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             TonePill.tone('${up ? '+' : '−'}${p.gainPct.abs().toStringAsFixed(1)}%', up ? Tone.ok : Tone.bad,
                 fontSize: 13),
             const SizedBox(height: 4),
             Text('vs ${Money.m(p.purchasePrice)} paid', style: AppType.caption),
           ]),
+        ],
       ]),
     );
   }
@@ -55,7 +57,7 @@ class MetricGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget cell(String l, String v, {Color? c, bool right = true, bool bottom = true}) => Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
               border: Border(
                 right: right ? const BorderSide(color: AppColors.divider) : BorderSide.none,
@@ -63,9 +65,13 @@ class MetricGrid extends StatelessWidget {
               ),
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(l, style: AppType.caption),
+              Text(l, style: AppType.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 4),
-              Text(v, style: AppType.num(21).copyWith(color: c ?? AppColors.ink)),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(v, style: AppType.num(21).copyWith(color: c ?? AppColors.ink), maxLines: 1),
+              ),
             ]),
           ),
         );
@@ -138,8 +144,10 @@ class _PerformanceCardState extends ConsumerState<PerformanceCard> {
     return SurfaceCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text('Performance', style: AppType.cardTitle),
-          const Spacer(),
+          Expanded(
+            child: Text('Performance', style: AppType.cardTitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+          const SizedBox(width: 8),
           SoftSegments(labels: const ['Value', 'Rent', 'Costs'], index: _tab, onChanged: (i) => setState(() => _tab = i)),
         ]),
         const SizedBox(height: 16),
