@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:landowner/core/data/memory_repository.dart';
+import 'package:landowner/core/utils/clock.dart';
 import 'package:landowner/core/utils/formatters.dart';
 import 'package:landowner/features/leases/domain/lease.dart';
 import 'package:landowner/features/leases/domain/rent_charge.dart';
@@ -82,8 +83,9 @@ void main() {
     final keys = repo.snapshot.map((r) => r.sourceKey).toList();
     expect(keys.toSet().length, keys.length);
     // Re-run reconciliation against the current state: nothing new to add.
+    // Same day boundary the app uses (Clock.today(): midnight, not "now").
     final derived = ReminderEngine.derive(ReminderInputs(
-      today: DateTime.now(),
+      today: const Clock().today(),
       properties: c.read(propertyRepoProvider).snapshot,
       tenants: c.read(tenantRepoProvider).snapshot,
       leases: c.read(leaseRepoProvider).snapshot,
