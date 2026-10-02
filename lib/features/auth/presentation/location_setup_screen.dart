@@ -316,17 +316,7 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Pressable(
-                          onTap: _skip,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text(
-                              'Skip for now',
-                              style: AppType.caption12Bold.copyWith(color: AppColors.textMuted),
-                            ),
-                          ),
-                        ),
+
                       ] else if (_state == _LocationState.loading) ...[
                         Container(
                           padding: const EdgeInsets.all(24),
@@ -589,15 +579,7 @@ class _LocationSetupScreenState extends ConsumerState<LocationSetupScreen> with 
                           height: 58,
                           onTap: () => _finishNotifications(allow: true),
                         ),
-                        const SizedBox(height: 16),
-                        Pressable(
-                          onTap: () => _finishNotifications(allow: false),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text('Not now', style: AppType.caption12Bold.copyWith(color: AppColors.textMuted)),
-                          ),
-                        ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 14),
                         Text(
                           'You can change this anytime in Settings → Notifications.',
                           textAlign: TextAlign.center,

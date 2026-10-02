@@ -36,6 +36,7 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Stream<AppUser?> authStateChanges() =>
       _auth.authStateChanges().asyncMap((fbUser) async {
+        debugPrint('>>> [FirebaseAuthRepository] authStateChanges fbUser: ${fbUser?.uid} (${fbUser?.email})');
         if (fbUser == null) {
           _cachedUser = null;
           return null;
@@ -241,9 +242,15 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<AppUser> signInWithApple() async {
     try {
+      debugPrint('>>> [AppleSignIn] Starting Apple Sign In flow...');
+      final isAvailable = await SignInWithApple.isAvailable();
+      debugPrint('>>> [AppleSignIn] SignInWithApple.isAvailable() = $isAvailable');
+
       final rawNonce = _generateNonce();
       final sha256Nonce = sha256.convert(utf8.encode(rawNonce)).toString();
+      debugPrint('>>> [AppleSignIn] rawNonce: $rawNonce, sha256: $sha256Nonce');
 
+      debugPrint('>>> [AppleSignIn] Requesting Apple ID credential...');
       final appleCred = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -253,17 +260,31 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       final identityToken = appleCred.identityToken;
+      debugPrint('>>> [AppleSignIn] Received credential for userIdentifier: ${appleCred.userIdentifier}, hasToken: ${identityToken != null}');
       if (identityToken == null) {
-        throw const AuthFailure('Apple sign-in failed: no identity token was provided.');
+        throw const AuthFailure('Apple sign-in failed: no identity token was provided by Apple.');
+      }
+
+      try {
+        final parts = identityToken.split('.');
+        if (parts.length > 1) {
+          final payloadStr = utf8.decode(base64Url.decode(base64.normalize(parts[1])));
+          debugPrint('>>> [AppleSignIn] Token payload: $payloadStr');
+        }
+      } catch (err) {
+        debugPrint('>>> [AppleSignIn] Could not decode token payload: $err');
       }
 
       final oauthCred = fb.OAuthProvider('apple.com').credential(
         idToken: identityToken,
         rawNonce: rawNonce,
+        accessToken: appleCred.authorizationCode,
       );
 
+      debugPrint('>>> [AppleSignIn] Authenticating with Firebase...');
       final userCred = await _auth.signInWithCredential(oauthCred);
       final fbUser = userCred.user!;
+      debugPrint('>>> [AppleSignIn] Firebase auth success! uid: ${fbUser.uid}, email: ${fbUser.email}');
 
       final doc = await _userDoc(fbUser.uid).get();
       if (doc.exists && doc.data() != null) {
@@ -280,18 +301,25 @@ class FirebaseAuthRepository implements AuthRepository {
         _cachedUser = newUser;
       }
       return _cachedUser!;
-    } on fb.FirebaseAuthException catch (e) {
+    } on fb.FirebaseAuthException catch (e, st) {
+      debugPrint('>>> [AppleSignIn] FirebaseAuthException: ${e.code} - ${e.message}\n$st');
+      if (e.code == 'operation-not-allowed') {
+        throw const AuthFailure('Apple sign-in is not enabled in Firebase Console. Please enable "Apple" under Firebase Authentication > Sign-in method.');
+      }
+      if (e.code == 'invalid-credential') {
+        throw AuthFailure('Firebase rejected Apple credential: ${e.message ?? "Invalid OAuth response from apple.com"}');
+      }
       throw AuthFailure(_mapAuthException(e));
-    } on SignInWithAppleAuthorizationException catch (e) {
+    } on SignInWithAppleAuthorizationException catch (e, st) {
+      debugPrint('>>> [AppleSignIn] SignInWithAppleAuthorizationException: code=${e.code} message=${e.message}\n$st');
       if (e.code == AuthorizationErrorCode.canceled) {
         throw const AuthFailure('Apple sign-in was canceled.');
       }
-      debugPrint('Apple sign-in error: ${e.code} ${e.message}');
-      throw const AuthFailure('Apple sign-in isn\u2019t available right now. Please try again or use email.');
-    } catch (e) {
+      throw AuthFailure('Apple error (${e.code}): ${e.message}');
+    } catch (e, st) {
+      debugPrint('>>> [AppleSignIn] Unexpected error: $e\n$st');
       if (e is AuthFailure) rethrow;
-      debugPrint('Auth error: $e');
-      throw const AuthFailure('Something went wrong. Check your connection and try again.');
+      throw AuthFailure('Apple sign-in failed: $e');
     }
   }
 
