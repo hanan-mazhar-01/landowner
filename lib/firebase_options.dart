@@ -59,23 +59,23 @@ class DefaultFirebaseOptions {
   );
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBKj7_7XI9XPCfs1kn6SPFQTR9mJi5JYPg',
-    appId: '1:341447303427:ios:a8be7e4bb33fa5a4528936',
+    appId: '1:341447303427:ios:3521c4598de2b8ae528936',
     messagingSenderId: '341447303427',
     projectId: 'landowner-e2c4b',
     storageBucket: 'landowner-e2c4b.firebasestorage.app',
     androidClientId: '341447303427-kh16tmugmc2hd6vg9aggie9no5m9cie5.apps.googleusercontent.com',
-    iosClientId: '341447303427-co51hb2faei72vp41vagngrqoh1bp9ir.apps.googleusercontent.com',
-    iosBundleId: 'com.veradostudio.landowner',
+    iosClientId: '341447303427-43n0d06ak8pn85vma729kabv9jrn0par.apps.googleusercontent.com',
+    iosBundleId: 'com.veradostudio.land-owner',
   );
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBKj7_7XI9XPCfs1kn6SPFQTR9mJi5JYPg',
-    appId: '1:341447303427:ios:a8be7e4bb33fa5a4528936',
+    appId: '1:341447303427:ios:3521c4598de2b8ae528936',
     messagingSenderId: '341447303427',
     projectId: 'landowner-e2c4b',
     storageBucket: 'landowner-e2c4b.firebasestorage.app',
     androidClientId: '341447303427-kh16tmugmc2hd6vg9aggie9no5m9cie5.apps.googleusercontent.com',
-    iosClientId: '341447303427-co51hb2faei72vp41vagngrqoh1bp9ir.apps.googleusercontent.com',
-    iosBundleId: 'com.veradostudio.landowner',
+    iosClientId: '341447303427-43n0d06ak8pn85vma729kabv9jrn0par.apps.googleusercontent.com',
+    iosBundleId: 'com.veradostudio.land-owner',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>341447303427-co51hb2faei72vp41vagngrqoh1bp9ir.apps.googleusercontent.com</string>
+	<string>341447303427-43n0d06ak8pn85vma729kabv9jrn0par.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.341447303427-co51hb2faei72vp41vagngrqoh1bp9ir</string>
+	<string>com.googleusercontent.apps.341447303427-43n0d06ak8pn85vma729kabv9jrn0par</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>341447303427-kh16tmugmc2hd6vg9aggie9no5m9cie5.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBKj7_7XI9XPCfs1kn6SPFQTR9mJi5JYPg</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,22 +15,22 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.veradostudio.landowner</string>
+	<string>com.veradostudio.land-owner</string>
 	<key>PROJECT_ID</key>
 	<string>landowner-e2c4b</string>
 	<key>STORAGE_BUCKET</key>
 	<string>landowner-e2c4b.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:341447303427:ios:a8be7e4bb33fa5a4528936</string>
+	<string>1:341447303427:ios:3521c4598de2b8ae528936</string>
 </dict>
 </plist>

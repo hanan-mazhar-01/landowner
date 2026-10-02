@@ -128,6 +128,27 @@ abstract final class LocalNotificationService {
     await plugin.show(id: id, title: title, body: body, notificationDetails: details, payload: route);
   }
 
+  /// Schedules one extra notification without touching the others (unlike
+  /// [sync], which replaces the whole pending set).
+  static Future<void> scheduleOne(ScheduledAlert a) async {
+    await init();
+    try {
+      final android = plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final exact = await android?.canScheduleExactNotifications() ?? true;
+      await plugin.zonedSchedule(
+        id: a.id,
+        title: a.title,
+        body: a.body,
+        scheduledDate: tz.TZDateTime.from(a.at.toUtc(), tz.UTC),
+        notificationDetails: details,
+        androidScheduleMode: exact ? AndroidScheduleMode.exactAllowWhileIdle : AndroidScheduleMode.inexactAllowWhileIdle,
+        payload: a.route,
+      );
+    } catch (e) {
+      debugPrint('Scheduling notification failed: $e');
+    }
+  }
+
   /// Makes the pending set exactly [alerts]: cancels anything no longer wanted
   /// and (re)schedules the rest. Delivered notifications are left alone.
   static Future<void> sync(List<ScheduledAlert> alerts) async {

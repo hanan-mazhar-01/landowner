@@ -1,7 +1,7 @@
 # Apple App Store Review Readiness QA Report
 
 **Application**: LandOwner (Homely Property Management)  
-**Bundle ID**: `com.veradostudio.landowner`  
+**Bundle ID (iOS / Apple)**: `com.veradostudio.land-owner` · **Android package**: `com.veradostudio.landowner` (Android does not allow "-")  
 **Version**: `1.0.0+1`  
 **Minimum iOS Deployment Target**: iOS 15.0  
 **Audit Date**: September 30, 2026  
@@ -62,7 +62,7 @@ A comprehensive multi-phase App Store compliance and quality assurance audit was
    - Quick action dialogs, password obscuring/reveal toggles
    - Legal document viewer and Cloudinary configuration validation
 3. **iOS Platform Specifications**:
-   - **Bundle Identifier**: `com.veradostudio.landowner`
+   - **Bundle Identifier**: `com.veradostudio.land-owner`
    - **Deployment Target**: iOS 15.0 (exceeds Apple minimum iOS 12/13 requirement)
    - **Version & Build**: `1.0.0` (Build `1`)
    - **Display Name**: `LandOwner`
@@ -137,7 +137,7 @@ Automated headless golden testing verified 37 major app views at native iPhone 1
 The following actions must be finalized in your web consoles before submitting the build in App Store Connect:
 
 ### 1. Apple Developer Portal (`developer.apple.com`)
-1. Go to **Certificates, Identifiers & Profiles** → **Identifiers** → select `com.veradostudio.landowner`.
+1. Go to **Certificates, Identifiers & Profiles** → **Identifiers** → select `com.veradostudio.land-owner`.
 2. Ensure the following Capabilities are checked:
    - ✅ **Push Notifications**
    - ✅ **Sign in with Apple**
@@ -147,7 +147,7 @@ The following actions must be finalized in your web consoles before submitting t
 1. In Firebase Project `landowner-e2c4b` → **Project Settings** → **Cloud Messaging** tab:
    - Under **Apple app configuration**, upload your APNs `.p8` Auth Key, Team ID, and Key ID.
 2. In **Project Settings** → **General** tab:
-   - Ensure your iOS App (`com.veradostudio.landowner`) has the `GoogleService-Info.plist` matching the project.
+   - Ensure your iOS App (`com.veradostudio.land-owner`) has the `GoogleService-Info.plist` matching the project.
 
 ### 3. Cloudinary Dashboard (`cloudinary.com`)
 1. Go to **Settings** → **Upload** → **Upload presets**.
